@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2².ai - 投资未来</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a1f44 0%, #1a0d3f 100%);
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(10, 20, 50, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 245, 254, 0.3);
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00f5fe 0%, #ff0055 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo span {
+            color: #ffea00;
+            font-size: 1.5rem;
+            vertical-align: super;
+            text-shadow: 0 0 15px #ff8c00;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #a0a0ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #00f5fe;
+            text-shadow: 0 0 10px rgba(0, 245, 254, 0.7);
+        }
+        
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 20px;
+        }
+        
+        /* 头部区域 */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 80px;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(106, 13, 173, 0.3) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00f5fe 0%, #ff0055 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 245, 254, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.8rem;
+            color: #a0a0ff;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        /* Logo设计区域 */
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+        
+        .logo-container {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            margin-bottom: 50px;
+        }
+        
+        .logo-animation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(10deg) rotateY(-5deg);
+        }
+        
+        .digit-2 {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+            font-size: 10rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 20px #00f5fe, 0 0 40px #00f5fe;
+            z-index: 3;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .square {
+            position: absolute;
+            left: 180px;
+            top: 30px;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #ffea00;
+            text-shadow: 0 0 15px #ff8c00, 0 0 30px #ff8c00;
+            z-index: 4;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .ai {
+            position: absolute;
+            left: 200px;
+            top: 120px;
+            font-size: 4.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00f5fe 0%, #ff0055 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            z-index: 2;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: #00f5fe;
+            opacity: 0.7;
+        }
+        
+        .energy-path {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            top: 80px;
+            left: 150px;
+            z-index: 1;
+            animation: rotate 20s linear infinite;
+        }
+        
+        .energy-path::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: rotate-reverse 15s linear infinite;
+        }
+        
+        /* 投资价值部分 */
+        .investment-section {
+            background: rgba(10, 20, 50, 0.7);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 80px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 245, 254, 0.3);
+            box-shadow: 0 0 30px rgba(0, 245, 254, 0.2);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #ffea00;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #00f5fe, #ff0055);
+        }
+        
+        .investment-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 50px 0;
+        }
+        
+        .stat {
+            background: rgba(106, 13, 173, 0.3);
+            padding: 30px 20px;
+            border-radius: 15px;
+            min-width: 220px;
+            border: 1px solid #6a0dad;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #00f5fe;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.2rem;
+            color: #a0a0ff;
+        }
+        
+        .tagline {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 50px 0;
+            color: #ffea00;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 234, 0, 0.5);
+        }
+        
+        .cta-button {
+            display: block;
+            margin: 0 auto;
+            background: linear-gradient(90deg, #ff0055 0%, #6a0dad 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.8);
+        }
+        
+        /* 价值模型部分 */
+        .value-model {
+            background: rgba(10, 20, 50, 0.7);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 80px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 245, 254, 0.3);
+            box-shadow: 0 0 30px rgba(0, 245, 254, 0.2);
+        }
+        
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .model-card {
+            background: rgba(106, 13, 173, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #6a0dad;
+            transition: transform 0.3s ease;
+        }
+        
+        .model-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .model-icon {
+            font-size: 2.5rem;
+            color: #ffea00;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .model-title {
+            font-size: 1.8rem;
+            color: #00f5fe;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .model-desc {
+            color: #a0a0ff;
+            text-align: center;
+        }
+        
+        /* 底部区域 */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #a0a0ff;
+            font-size: 1.1rem;
+            border-top: 1px solid rgba(0, 245, 254, 0.3);
+            margin-top: 50px;
+        }
+        
+        /* 动画 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); border-image: linear-gradient(45deg, #00f5fe, #ff0055) 1; }
+            100% { transform: rotate(360deg); border-image: linear-gradient(45deg, #ff0055, #00f5fe) 1; }
+        }
+        
+        @keyframes rotate-reverse {
+            0% { transform: rotate(0deg); border-image: linear-gradient(45deg, #ff0055, #00f5fe) 1; }
+            100% { transform: rotate(-360deg); border-image: linear-gradient(45deg, #00f5fe, #ff0055) 1; }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .logo-container {
+                width: 300px;
+                height: 225px;
+                transform: scale(0.9);
+            }
+            
+            .digit-2 {
+                font-size: 7rem;
+                left: 30px;
+            }
+            
+            .square {
+                left: 140px;
+                top: 20px;
+            }
+            
+            .ai {
+                left: 150px;
+                top: 90px;
+                font-size: 3.5rem;
+            }
+            
+            .investment-section, .value-model {
+                padding: 30px 20px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .stat {
+                min-width: 100%;
+            }
+            
+            .tagline {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">2<span>²</span>.ai</div>
+        <div class="nav-links">
+            <a href="#value">投资价值</a>
+            <a href="#model">价值模型</a>
+            <a href="#contact">联系我们</a>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <div class="container">
+        <!-- 头部区域 -->
+        <section class="hero">
+            <h1>2².ai - 智能的平方，价值的指数</h1>
+            <p class="subtitle">全球仅存的数学符号溢价域名 · AI时代的数字黄金 · 域名投资者的终极资产</p>
+        </section>
+        
+        <!-- Logo展示区 -->
+        <section class="logo-section">
+            <div class="logo-container">
+                <div class="logo-animation">
+                    <div class="digit-2">2</div>
+                    <div class="square">²</div>
+                    <div class="ai">.ai</div>
+                    <div class="energy-path"></div>
+                    <div class="particles" id="particles"></div>
+                </div>
+            </div>
+            <p class="subtitle">全球最稀缺的AI域名资产 · 数学符号的终极溢价</p>
+        </section>
+        
+        <!-- 投资价值部分 -->
+        <section id="value" class="investment-section">
+            <h2 class="section-title">域名投资价值分析</h2>
+            
+            <div class="investment-stats">
+                <div class="stat">
+                    <div class="stat-value">300%</div>
+                    <div class="stat-label">AI域名年均增值</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">$180K</div>
+                    <div class="stat-label">符号域名历史成交</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">100</div>
+                    <div class="stat-label">两位数AI域名存量</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">700%</div>
+                    <div class="stat-label">AI²类商标增长</div>
+                </div>
+            </div>
+            
+            <div class="tagline">全球最稀缺的AI域名资产 · 数学符号的终极溢价</div>
+            
+            <button class="cta-button">立即参与域名竞拍</button>
+        </section>
+        
+        <!-- 价值模型部分 -->
+        <section id="model" class="value-model">
+            <h2 class="section-title">三大溢价引擎</h2>
+            
+            <div class="model-grid">
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 class="model-title">符号稀缺</h3>
+                    <p class="model-desc">数学语言通证，全球仅存的数学符号溢价域名，具备天然品牌延展性</p>
+                </div>
+                
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="model-title">终端适配</h3>
+                    <p class="model-desc">AI算法公司刚需，完美适配各类AI企业品牌标识</p>
+                </div>
+                
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3 class="model-title">传播成本</h3>
+                    <p class="model-desc">视觉符号直觉认知，无需解释含义，降低品牌传播成本</p>
+                </div>
+            </div>
+        </section>
+        
+         </div>
+    
+    <!-- 底部区域 -->
+    <footer id="contact">
+        <p>© 2025 22.ai 域名资产投资平台 | 两位数AI域名的最后原始股</p>
+        <p style="margin-top: 15px;">contact@22.ai | 400-888-2222</p>
+    </footer>
+
+    <script>
+        // 创建粒子效果
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 100;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // 随机位置
+            const posX = Math.random() * 400;
+            const posY = Math.random() * 300;
+            
+            // 随机大小
+            const size = Math.random() * 5 + 1;
+            
+            // 随机颜色（蓝紫色系）
+            const colors = ['#00F5FE', '#6A0DAD', '#FF0055', '#FFEA00'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.backgroundColor = color;
+            particle.style.left = `${posX}px`;
+            particle.style.top = `${posY}px`;
+            
+            // 动画参数
+            const duration = Math.random() * 10 + 5;
+            const delay = Math.random() * 5;
+            
+            particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+            
+            particlesContainer.appendChild(particle);
+        }
+        
+        // 动态更新能量路径边框渐变
+        function updateGradient() {
+            const energyPath = document.querySelector('.energy-path');
+            const angle = (Date.now() / 50) % 360;
+            
+            energyPath.style.borderImage = 
+                `linear-gradient(${angle}deg, #00F5FE, #FF0055) 1`;
+            
+            requestAnimationFrame(updateGradient);
+        }
+        
+        updateGradient();
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
