@@ -10,13 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Libraries -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
-    <script src="https://unpkg.com/lucide-react/dist/umd/lucide-react.js"></script>
-    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -106,6 +99,21 @@
             transform-style: preserve-3d;
         }
     </style>
+
+    <!-- Libraries (UMD for single file deployment) -->
+    <!-- React Core -->
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel for in-browser JSX compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Third Party Libraries -->
+    <!-- Recharts (Must load after React) -->
+    <script src="https://unpkg.com/recharts@2.12.0/umd/Recharts.js"></script>
+    
+    <!-- Lucide React Icons -->
+    <script src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script>
 <script type="importmap">
 {
   "imports": {
@@ -122,10 +130,12 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // --- Setup ---
+        // --- Setup & Globals ---
         const { useState, useEffect } = React;
-        const { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
-        const { Menu, X, ArrowRight, Sparkles, Terminal, Cpu, Globe, Lock, Zap, Box, Clock, ShieldCheck, User } = LucideReact;
+        
+        // Access globals provided by UMD scripts
+        const { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = window.Recharts;
+        const { Menu, X, ArrowRight, Sparkles, Terminal, Cpu, Globe, Lock, Zap, Box, Clock, ShieldCheck, User } = window.lucideReact;
 
         // --- Constants ---
         const NAV_ITEMS = [
