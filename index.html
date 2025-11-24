@@ -1,663 +1,438 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2².ai | The Exponential Asset</title>
-    
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Space Grotesk', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            dark: '#050505',
-                            card: '#0A0A0A',
-                            accent: '#3B82F6', // Electric Blue
-                            glow: '#60A5FA',
-                            gold: '#F59E0B',
-                            purple: '#8B5CF6'
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'fade-in': 'fadeIn 0.3s ease-out forwards',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #030303;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --accent-gradient: linear-gradient(90deg, #7b2cbf 0%, #f72585 100%);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --glow-color: rgba(247, 37, 133, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
         body {
-            background-color: #050505;
-            color: #ffffff;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Noise Texture Overlay */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Ambient Background Glows */
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            z-index: -1;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: #4cc9f0;
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: #7209b7;
+            bottom: 0;
+            right: -100px;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 40px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .contact-btn {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--card-border);
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(4rem, 15vw, 10rem);
+            line-height: 1;
+            font-weight: 700;
+            background: linear-gradient(180deg, #ffffff 0%, #666666 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: -0.04em;
+            position: relative;
+        }
+
+        .main-title sup {
+            font-size: 0.5em;
+            vertical-align: super;
+            color: #f72585; /* Accent color for the square */
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            position: relative;
+            top: -0.1em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+
+        /* Bento Grid Section */
+        .grid-section {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            margin-bottom: 120px;
+        }
+
+        .bento-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .bento-card:hover::before {
+            opacity: 1;
         }
-        ::-webkit-scrollbar-track {
-            background: #0A0A0A;
+
+        .card-large {
+            grid-column: span 12;
+            background: radial-gradient(circle at top right, rgba(123, 44, 191, 0.15), transparent 40%), var(--card-bg);
         }
-        ::-webkit-scrollbar-thumb {
+
+        .card-medium {
+            grid-column: span 6;
+        }
+
+        .card-small {
+            grid-column: span 4;
+        }
+
+        @media (max-width: 900px) {
+            .card-medium { grid-column: span 12; }
+            .card-small { grid-column: span 12; }
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #f72585;
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .math-highlight {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Value List */
+        .value-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .value-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .value-list li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #f72585;
+            border-radius: 50%;
+        }
+
+        /* Footer / CTA */
+        .footer {
+            text-align: center;
+            padding: 80px 0;
+            border-top: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        .cta-box {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            background: #fff;
+            color: #000;
+            padding: 18px 40px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .copyright {
+            margin-top: 80px;
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* Utility for the math visualization */
+        .math-visual {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
             background: #333;
-            border-radius: 4px;
+            border-radius: 2px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        .dot.active {
+            background: #f72585;
+            box-shadow: 0 0 10px #f72585;
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .text-glow {
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-        }
-        
-        .grid-bg {
-            background-size: 50px 50px;
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-        }
-        
-        .perspective-1000 {
-            perspective: 1000px;
-        }
-        
-        .transform-style-3d {
-            transform-style: preserve-3d;
-        }
     </style>
-
-    <!-- Libraries (UMD for single file deployment) -->
-    <!-- React Core -->
-    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-    
-    <!-- Babel for in-browser JSX compilation -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Third Party Libraries -->
-    <!-- Recharts (Must load after React) -->
-    <script src="https://unpkg.com/recharts@2.12.0/umd/Recharts.js"></script>
-    
-    <!-- Lucide React Icons -->
-    <script src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script>
-<script type="importmap">
-{
-  "imports": {
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.5.0"
-  }
-}
-</script>
 </head>
 <body>
-    <div id="root"></div>
+    <!-- Texture Overlay -->
+    <div class="noise"></div>
+    
+    <!-- Ambient Light -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
 
-    <script type="text/babel">
-        // --- Setup & Globals ---
-        const { useState, useEffect } = React;
-        
-        // Access globals provided by UMD scripts
-        const { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = window.Recharts;
-        const { Menu, X, ArrowRight, Sparkles, Terminal, Cpu, Globe, Lock, Zap, Box, Clock, ShieldCheck, User } = window.lucideReact;
+    <div class="container">
+        <header>
+            <div class="logo">2².ai</div>
+            <a href="mailto:kf@le.cn" class="contact-btn">Inquire Price</a>
+        </header>
 
-        // --- Constants ---
-        const NAV_ITEMS = [
-            { label: 'Asset Value', href: '#market-data' },
-            { label: 'Proposition', href: '#features' },
-            { label: 'Auction', href: '#auction' },
-            { label: 'Contact', href: '#footer' },
-        ];
+        <!-- Hero -->
+        <section class="hero">
+            <h1 class="main-title">2<sup>2</sup>.ai</h1>
+            <p class="subtitle">
+                The intersection of mathematical perfection and artificial intelligence. 
+                <br>Short. Logical. Exponential.
+            </p>
+        </section>
 
-        const AUCTION_END_DATE = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
-
-        // --- Components ---
-
-        const Header = () => {
-            const [isScrolled, setIsScrolled] = useState(false);
-            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-            useEffect(() => {
-                const handleScroll = () => {
-                    setIsScrolled(window.scrollY > 50);
-                };
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
-
-            return (
-                <header 
-                    className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-                        isScrolled ? 'py-4 bg-brand-dark/80 backdrop-blur-md border-b border-white/5' : 'py-6 bg-transparent'
-                    }`}
-                >
-                    <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-                        <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo(0,0)}>
-                            <span className="font-mono text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-brand-accent group-hover:to-brand-purple transition-all duration-300">
-                                2<sup className="text-brand-accent">2</sup>.ai
-                            </span>
-                        </div>
-
-                        {/* Desktop Nav */}
-                        <nav className="hidden md:flex items-center gap-8">
-                            {NAV_ITEMS.map((item) => (
-                                <a 
-                                    key={item.label}
-                                    href={item.href}
-                                    className="text-sm font-medium text-gray-400 hover:text-white transition-colors uppercase tracking-wider"
-                                >
-                                    {item.label}
-                                </a>
-                            ))}
-                            <button className="px-5 py-2 bg-white text-black text-sm font-bold rounded-full hover:bg-brand-accent hover:text-white transition-all duration-300">
-                                Place Bid
-                            </button>
-                        </nav>
-
-                        {/* Mobile Menu Toggle */}
-                        <button 
-                            className="md:hidden text-white"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        >
-                            {isMobileMenuOpen ? <X /> : <Menu />}
-                        </button>
+        <!-- Bento Grid -->
+        <section class="grid-section">
+            <!-- Card 1: The Math -->
+            <div class="bento-card card-medium">
+                <div>
+                    <div class="math-visual">
+                        <div class="dot active"></div><div class="dot active"></div>
                     </div>
-
-                    {/* Mobile Nav */}
-                    {isMobileMenuOpen && (
-                        <div className="md:hidden absolute top-full left-0 right-0 bg-brand-card border-b border-white/10 p-6 flex flex-col gap-4 animate-fade-in">
-                            {NAV_ITEMS.map((item) => (
-                                <a 
-                                    key={item.label}
-                                    href={item.href}
-                                    className="text-lg font-medium text-gray-300 hover:text-white"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    {item.label}
-                                </a>
-                            ))}
-                            <button className="w-full py-3 bg-brand-accent text-white font-bold rounded-lg">
-                                Place Bid
-                            </button>
-                        </div>
-                    )}
-                </header>
-            );
-        };
-
-        const Hero = () => {
-            return (
-                <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-                    {/* Background Effects */}
-                    <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
-                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-accent/20 rounded-full blur-[128px] animate-pulse-slow"></div>
-                    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-purple/20 rounded-full blur-[128px] animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-
-                    <div className="max-w-7xl mx-auto px-6 w-full relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-                        
-                        {/* Text Content */}
-                        <div className="text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-accent/30 bg-brand-accent/10 mb-6">
-                                <span className="relative flex h-2 w-2">
-                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
-                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
-                                </span>
-                                <span className="text-xs font-mono text-brand-accent uppercase tracking-widest">Auction Live Now</span>
-                            </div>
-
-                            <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
-                                The Exponential <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500">
-                                    Asset Class
-                                </span>
-                            </h1>
-                            
-                            <p className="text-lg text-gray-400 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                                Own the intersection of mathematics and artificial intelligence. 
-                                <strong className="text-white"> 2².ai </strong> is not just a domain; it's a statement of exponential power in the digital age.
-                            </p>
-
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                                <button className="group px-8 py-4 bg-white text-black font-bold rounded-lg hover:bg-brand-accent hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
-                                    Acquire Asset
-                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </button>
-                                <button className="px-8 py-4 glass-panel text-white font-semibold rounded-lg hover:bg-white/5 transition-all duration-300">
-                                    View Valuation Report
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Visual/3D Representation */}
-                        <div className="relative h-[400px] md:h-[500px] flex items-center justify-center perspective-1000">
-                            <div className="relative animate-float transform-style-3d">
-                                {/* Main Number */}
-                                <div className="font-mono text-[12rem] md:text-[16rem] font-bold leading-none text-transparent bg-clip-text bg-gradient-to-b from-white to-white/10 relative z-10 drop-shadow-2xl">
-                                    2
-                                    <sup className="absolute top-8 -right-24 md:-right-32 text-[6rem] md:text-[8rem] text-brand-accent bg-clip-text text-transparent bg-gradient-to-b from-brand-accent to-brand-purple">2</sup>
-                                </div>
-                                
-                                {/* Reflection/Shadow */}
-                                <div className="absolute -bottom-8 left-0 right-0 h-12 bg-black/50 blur-xl rounded-[100%]"></div>
-                                
-                                {/* Decorative Rings */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-white/10 rounded-full animate-[spin_10s_linear_infinite]"></div>
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border border-dashed border-white/5 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
-
-                                {/* Floating elements */}
-                                <div className="absolute -right-10 top-20 glass-panel p-3 rounded-lg flex items-center gap-3 animate-bounce shadow-lg shadow-brand-accent/20">
-                                    <Sparkles className="w-5 h-5 text-brand-gold" />
-                                    <div className="text-xs">
-                                        <div className="text-gray-400">Rarity Score</div>
-                                        <div className="font-bold text-white">99.9%</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="math-visual">
+                        <div class="dot active"></div><div class="dot active"></div>
                     </div>
-                </section>
-            );
-        };
-
-        const MarketData = () => {
-            const data = [
-              { year: '2020', standard: 2000, symbol: 5000 },
-              { year: '2021', standard: 3500, symbol: 12000 },
-              { year: '2022', standard: 4200, symbol: 28000 },
-              { year: '2023', standard: 6800, symbol: 55000 },
-              { year: '2024', standard: 9000, symbol: 98000 },
-              { year: '2025', standard: 12000, symbol: 145000 },
-            ];
-
-            const CustomTooltip = ({ active, payload, label }) => {
-                if (active && payload && payload.length) {
-                  return (
-                    <div className="glass-panel p-4 rounded-lg shadow-xl border border-white/10">
-                      <p className="text-gray-400 text-xs mb-2">{label}</p>
-                      <p className="text-brand-accent font-bold text-sm">
-                        Symbol .ai: ${payload[1].value.toLocaleString()}
-                      </p>
-                      <p className="text-gray-500 text-sm">
-                        Standard .ai: ${payload[0].value.toLocaleString()}
-                      </p>
-                    </div>
-                  );
-                }
-                return null;
-            };
-
-            return (
-                <section id="market-data" className="py-24 relative">
-                    <div className="max-w-7xl mx-auto px-6">
-                        <div className="mb-12 text-center">
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4">Market Performance</h2>
-                            <p className="text-gray-400 max-w-2xl mx-auto">
-                                Historical data indicates symbol-based .ai domains outperform standard keywords by a significant margin due to scarcity and brand versatility.
-                            </p>
-                        </div>
-
-                        <div className="glass-panel p-6 md:p-10 rounded-2xl border border-white/5 shadow-2xl bg-brand-dark/50">
-                            <div className="h-[400px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                                        <defs>
-                                            <linearGradient id="colorSymbol" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
-                                                <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
-                                            </linearGradient>
-                                            <linearGradient id="colorStandard" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#ffffff" stopOpacity={0.1}/>
-                                                <stop offset="95%" stopColor="#ffffff" stopOpacity={0}/>
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
-                                        <XAxis 
-                                            dataKey="year" 
-                                            stroke="#666" 
-                                            tick={{fill: '#666'}}
-                                            axisLine={false}
-                                            tickLine={false}
-                                        />
-                                        <YAxis 
-                                            stroke="#666" 
-                                            tick={{fill: '#666'}}
-                                            tickFormatter={(value) => `$${value / 1000}k`}
-                                            axisLine={false}
-                                            tickLine={false}
-                                        />
-                                        <Tooltip content={<CustomTooltip />} />
-                                        <Area 
-                                            type="monotone" 
-                                            dataKey="standard" 
-                                            stroke="#666" 
-                                            fillOpacity={1} 
-                                            fill="url(#colorStandard)" 
-                                            strokeWidth={2}
-                                        />
-                                        <Area 
-                                            type="monotone" 
-                                            dataKey="symbol" 
-                                            stroke="#3B82F6" 
-                                            fillOpacity={1} 
-                                            fill="url(#colorSymbol)" 
-                                            strokeWidth={3}
-                                        />
-                                    </AreaChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                            <div className="glass-panel p-6 rounded-xl border-l-4 border-brand-accent">
-                                <div className="text-gray-400 text-sm mb-1">Growth Rate (YoY)</div>
-                                <div className="text-3xl font-mono font-bold text-white">+145%</div>
-                            </div>
-                            <div className="glass-panel p-6 rounded-xl border-l-4 border-brand-purple">
-                                <div className="text-gray-400 text-sm mb-1">Market Cap Est.</div>
-                                <div className="text-3xl font-mono font-bold text-white">$150k+</div>
-                            </div>
-                            <div className="glass-panel p-6 rounded-xl border-l-4 border-brand-gold">
-                                <div className="text-gray-400 text-sm mb-1">Global Availability</div>
-                                <div className="text-3xl font-mono font-bold text-white">Unique</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        const Features = () => {
-            return (
-                <section id="features" className="py-24 bg-brand-card/30 relative">
-                     {/* Decorative background blur */}
-                     <div className="absolute right-0 top-1/2 w-[500px] h-[500px] bg-brand-accent/5 blur-[100px] rounded-full pointer-events-none"></div>
-
-                    <div className="max-w-7xl mx-auto px-6">
-                        <div className="mb-16">
-                            <h2 className="text-3xl md:text-5xl font-bold mb-6">The Algebra of Value</h2>
-                            <p className="text-xl text-gray-400 max-w-2xl">
-                                Why 2².ai represents the pinnacle of digital real estate in the artificial intelligence era.
-                            </p>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-6 h-auto md:h-[600px]">
-                            
-                            {/* Large Featured Box */}
-                            <div className="md:col-span-2 md:row-span-2 glass-panel rounded-3xl p-8 md:p-12 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-brand-accent/20 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 transition-all duration-500 group-hover:bg-brand-accent/30"></div>
-                                
-                                <div className="relative z-10 flex flex-col h-full justify-between">
-                                    <div>
-                                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6">
-                                            <Terminal className="text-brand-accent" />
-                                        </div>
-                                        <h3 className="text-2xl font-bold mb-4">Code-Native Syntax</h3>
-                                        <p className="text-gray-400 leading-relaxed text-lg">
-                                            Developers and data scientists think in symbols. "2 Squared" isn't just a number; 
-                                            it's an operation. It signifies exponential growth, computing power, and 
-                                            algorithmic efficiency. It speaks the language of the future.
-                                        </p>
-                                    </div>
-                                    
-                                    <div className="mt-8 font-mono text-sm text-brand-accent border border-brand-accent/20 rounded px-4 py-2 self-start bg-brand-accent/5">
-                                        &gt; import exponential_growth
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Smaller Box 1 */}
-                            <div className="glass-panel rounded-3xl p-8 relative group hover:border-brand-purple/50 transition-colors">
-                                <div className="w-10 h-10 bg-brand-purple/20 rounded-lg flex items-center justify-center mb-4">
-                                    <Cpu className="text-brand-purple" />
-                                </div>
-                                <h3 className="text-xl font-bold mb-2">Short & Potent</h3>
-                                <p className="text-sm text-gray-400">
-                                    Only 2 characters before the extension. The ultimate rarity in the naming world.
-                                </p>
-                            </div>
-
-                            {/* Smaller Box 2 */}
-                            <div className="glass-panel rounded-3xl p-8 relative group hover:border-brand-gold/50 transition-colors">
-                                <div className="w-10 h-10 bg-brand-gold/20 rounded-lg flex items-center justify-center mb-4">
-                                    <Globe className="text-brand-gold" />
-                                </div>
-                                <h3 className="text-xl font-bold mb-2">Global Recognizability</h3>
-                                <p className="text-sm text-gray-400">
-                                    Math is the universal language. No translation needed across borders.
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Bottom Row of Mini Features */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                             <div className="flex items-center gap-4 p-4 border border-white/5 rounded-xl bg-brand-dark">
-                                <Lock className="text-gray-500" size={20} />
-                                <div>
-                                    <div className="font-bold text-sm">Secure Transfer</div>
-                                    <div className="text-xs text-gray-500">Escrow.com protected</div>
-                                </div>
-                             </div>
-                             <div className="flex items-center gap-4 p-4 border border-white/5 rounded-xl bg-brand-dark">
-                                <Zap className="text-gray-500" size={20} />
-                                <div>
-                                    <div className="font-bold text-sm">Instant Brand Authority</div>
-                                    <div className="text-xs text-gray-500">Day 1 credibility</div>
-                                </div>
-                             </div>
-                             <div className="flex items-center gap-4 p-4 border border-white/5 rounded-xl bg-brand-dark">
-                                <Box className="text-gray-500" size={20} />
-                                <div>
-                                    <div className="font-bold text-sm">Asset Liquidity</div>
-                                    <div className="text-xs text-gray-500">High resale demand</div>
-                                </div>
-                             </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        const Auction = () => {
-            const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-            const [bidAmount, setBidAmount] = useState('');
-
-            useEffect(() => {
-                const calculateTimeLeft = () => {
-                    const difference = +new Date(AUCTION_END_DATE) - +new Date();
-                    if (difference > 0) {
-                        setTimeLeft({
-                            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                            minutes: Math.floor((difference / 1000 / 60) % 60),
-                            seconds: Math.floor((difference / 1000) % 60)
-                        });
-                    }
-                };
-
-                const timer = setInterval(calculateTimeLeft, 1000);
-                return () => clearInterval(timer);
-            }, []);
-
-            const handleSubmitBid = (e) => {
-                e.preventDefault();
-                alert(`Bid of $${bidAmount} placed (Demo)`);
-            };
-
-            return (
-                <section id="auction" className="py-24 relative overflow-hidden">
-                    {/* Background Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-accent/5 to-transparent pointer-events-none"></div>
-
-                    <div className="max-w-4xl mx-auto px-6 relative z-10">
-                        <div className="glass-panel rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
-                            <div className="p-1 bg-gradient-to-r from-transparent via-brand-accent to-transparent opacity-20"></div>
-                            
-                            <div className="p-8 md:p-12">
-                                <div className="text-center mb-10">
-                                    <h2 className="text-3xl font-bold mb-2">Acquisition Event</h2>
-                                    <p className="text-gray-400">Private auction ends soon. Pre-qualified bidders only.</p>
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-12 items-center">
-                                    {/* Left: Timer & Stats */}
-                                    <div className="space-y-8">
-                                        <div className="space-y-2">
-                                            <div className="text-sm text-gray-500 uppercase tracking-widest font-mono">Time Remaining</div>
-                                            <div className="flex gap-4 font-mono text-3xl md:text-4xl font-bold text-white">
-                                                <div className="text-center">
-                                                    <div>{timeLeft.days.toString().padStart(2, '0')}</div>
-                                                    <div className="text-xs text-gray-500 font-sans font-normal mt-1">Days</div>
-                                                </div>
-                                                <span className="text-gray-600">:</span>
-                                                <div className="text-center">
-                                                    <div>{timeLeft.hours.toString().padStart(2, '0')}</div>
-                                                    <div className="text-xs text-gray-500 font-sans font-normal mt-1">Hrs</div>
-                                                </div>
-                                                <span className="text-gray-600">:</span>
-                                                <div className="text-center">
-                                                    <div>{timeLeft.minutes.toString().padStart(2, '0')}</div>
-                                                    <div className="text-xs text-gray-500 font-sans font-normal mt-1">Min</div>
-                                                </div>
-                                                <span className="text-gray-600">:</span>
-                                                <div className="text-center">
-                                                    <div className="text-brand-accent">{timeLeft.seconds.toString().padStart(2, '0')}</div>
-                                                    <div className="text-xs text-gray-500 font-sans font-normal mt-1">Sec</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-4 pt-6 border-t border-white/5">
-                                            <div className="flex justify-between items-center text-sm">
-                                                <span className="text-gray-400">Current High Bid</span>
-                                                <span className="font-mono font-bold text-xl">$52,000</span>
-                                            </div>
-                                            <div className="flex justify-between items-center text-sm">
-                                                <span className="text-gray-400">Reserve Price</span>
-                                                <span className="text-green-400 flex items-center gap-1">
-                                                    <ShieldCheck size={14} /> Met
-                                                </span>
-                                            </div>
-                                            <div className="flex justify-between items-center text-sm">
-                                                <span className="text-gray-400">Active Bidders</span>
-                                                <span className="flex items-center gap-1">
-                                                    <User size={14} /> 14
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Right: Bid Form */}
-                                    <div className="bg-white/5 rounded-2xl p-6 border border-white/5">
-                                        <form onSubmit={handleSubmitBid} className="space-y-6">
-                                            <div>
-                                                <label className="block text-xs uppercase text-gray-500 font-bold mb-2">Your Offer (USD)</label>
-                                                <div className="relative">
-                                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">$</span>
-                                                    <input 
-                                                        type="number" 
-                                                        min="52500"
-                                                        step="100"
-                                                        value={bidAmount}
-                                                        onChange={(e) => setBidAmount(e.target.value)}
-                                                        className="w-full bg-black/50 border border-white/10 rounded-xl py-4 pl-8 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent transition-colors font-mono"
-                                                        placeholder="55,000"
-                                                    />
-                                                </div>
-                                                <div className="mt-2 text-xs text-gray-500">Min. increment: $500</div>
-                                            </div>
-
-                                            <button type="submit" className="w-full py-4 bg-brand-accent hover:bg-brand-accent/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-brand-accent/20">
-                                                Confirm Bid
-                                            </button>
-                                            
-                                            <div className="text-center text-xs text-gray-500">
-                                                By placing a bid, you agree to the <a href="#" className="underline hover:text-white">Auction Terms</a>.
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        const Footer = () => {
-            return (
-                <footer id="footer" className="bg-black py-12 border-t border-white/5">
-                    <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="text-2xl font-mono font-bold text-gray-600 hover:text-white transition-colors">
-                            2².ai
-                        </div>
-                        
-                        <div className="flex gap-8 text-sm text-gray-500">
-                            <a href="#" className="hover:text-brand-accent transition-colors">Privacy</a>
-                            <a href="#" className="hover:text-brand-accent transition-colors">Terms</a>
-                            <a href="#" className="hover:text-brand-accent transition-colors">Escrow</a>
-                        </div>
-
-                        <div className="text-sm text-gray-600">
-                            &copy; 2025 Exponential Assets Ltd.
-                        </div>
-                    </div>
-                </footer>
-            );
-        };
-
-        const App = () => {
-          return (
-            <div className="bg-brand-dark min-h-screen text-white font-sans selection:bg-brand-accent selection:text-white">
-                <Header />
-                <main>
-                    <Hero />
-                    <Features />
-                    <MarketData />
-                    <Auction />
-                </main>
-                <Footer />
+                </div>
+                <div>
+                    <div class="math-highlight">2² = 4</div>
+                    <h3 class="card-title">Universal Logic</h3>
+                    <p class="card-desc">Before language, there was math. "Two squared" is understood globally without translation. It symbolizes exponential growth and foundational strength.</p>
+                </div>
             </div>
-          );
-        };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+            <!-- Card 2: The AI Context -->
+            <div class="bento-card card-medium">
+                <div class="card-icon">✦</div>
+                <div>
+                    <h3 class="card-title">The AI Era Asset</h3>
+                    <p class="card-desc">In the age of algorithms, mathematical domains are the ultimate status symbol. Short, memorable, and deeply relevant to computation and neural networks.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Scarcity -->
+            <div class="bento-card card-small">
+                <h3 class="card-title">Rarity</h3>
+                <p class="card-desc">Only a handful of single-digit squared domains exist. This is "Digital Gold" for the Web3 and AGI generation.</p>
+            </div>
+
+            <!-- Card 4: Use Cases -->
+            <div class="bento-card card-small">
+                <h3 class="card-title">Application</h3>
+                <ul class="value-list">
+                    <li>LLM Models</li>
+                    <li>Quantitative Trading</li>
+                    <li>Educational Tech</li>
+                    <li>Venture Capital</li>
+                </ul>
+            </div>
+
+            <!-- Card 5: Investment -->
+            <div class="bento-card card-small">
+                <h3 class="card-title">Valuation</h3>
+                <p class="card-desc">Comparable 2-character .ai domains have consistently traded in the 6-figure USD range.</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="cta-box">
+                <h2 style="font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 15px;">Acquire this Asset</h2>
+                <p style="color: var(--text-secondary);">This domain is currently held in a private portfolio. Serious offers are being considered.</p>
+                
+                <a href="mailto:kf@le.cn" class="cta-button">
+                    Make an Offer <span style="font-size: 1.2em;">→</span>
+                </a>
+            </div>
+            <p class="copyright">© 2025 2².ai | Premium Digital Asset</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple parallax effect for the glow orbs
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.glow-orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 20;
+                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
     </script>
 </body>
 </html>
