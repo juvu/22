@@ -3,436 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2².ai | The Exponential Asset</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>22.ai | The Master Number</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-color: #030303;
-            --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --accent-gradient: linear-gradient(90deg, #7b2cbf 0%, #f72585 100%);
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --glow-color: rgba(247, 37, 133, 0.15);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100;400;900&family=Cinzel:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            outline: none;
+        :root {
+            --bg-color: #080808;
+            --text-color: #e5e5e5;
+            --accent-color: #333;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Noise Texture Overlay */
-        .noise {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
-            pointer-events: none;
-            z-index: 999;
-        }
-
-        /* Ambient Background Glows */
-        .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.4;
-            z-index: -1;
-            animation: float 20s infinite alternate ease-in-out;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: #4cc9f0;
-            top: -100px;
-            left: -100px;
-        }
-
-        .orb-2 {
-            width: 500px;
-            height: 500px;
-            background: #7209b7;
-            bottom: 0;
-            right: -100px;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 50px) scale(1.1); }
-        }
-
-        /* Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        header {
-            padding: 40px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .contact-btn {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--card-border);
-            padding: 12px 24px;
-            border-radius: 100px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .contact-btn:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: white;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 100px 0 80px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .main-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(4rem, 15vw, 10rem);
-            line-height: 1;
-            font-weight: 700;
-            background: linear-gradient(180deg, #ffffff 0%, #666666 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 20px;
-            letter-spacing: -0.04em;
-            position: relative;
-        }
-
-        .main-title sup {
-            font-size: 0.5em;
-            vertical-align: super;
-            color: #f72585; /* Accent color for the square */
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            position: relative;
-            top: -0.1em;
-        }
-
-        .subtitle {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 50px;
-            font-weight: 300;
-        }
-
-        /* Bento Grid Section */
-        .grid-section {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
-            margin-bottom: 120px;
-        }
-
-        .bento-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
-            position: relative;
+            color: var(--text-color);
+            font-family: 'Space Mono', monospace; /* 基础字体：数据感 */
             overflow: hidden;
+            transition: all 0.5s ease;
         }
 
-        .bento-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .bento-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .bento-card:hover::before {
-            opacity: 1;
-        }
-
-        .card-large {
-            grid-column: span 12;
-            background: radial-gradient(circle at top right, rgba(123, 44, 191, 0.15), transparent 40%), var(--card-bg);
-        }
-
-        .card-medium {
-            grid-column: span 6;
-        }
-
-        .card-small {
-            grid-column: span 4;
-        }
-
-        @media (max-width: 900px) {
-            .card-medium { grid-column: span 12; }
-            .card-small { grid-column: span 12; }
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #f72585;
-        }
-
-        .card-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .card-desc {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-
-        .math-highlight {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            background: var(--accent-gradient);
+        /* 巨型主标题 */
+        .master-number {
+            font-family: 'Archivo', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.8;
+            background: linear-gradient(180deg, #fff 0%, #666 100%);
             -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.95;
         }
 
-        /* Value List */
-        .value-list {
-            list-style: none;
-            margin-top: 20px;
+        /* 副标题风格：根据季度变化 */
+        .subtitle-text {
+            font-family: 'Cinzel', serif; /* 罗马碑文感 */
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            opacity: 0; /* 初始隐藏，JS淡入 */
+            transform: translateY(10px);
+            transition: all 1s ease;
+        }
+
+        .subtitle-visible {
+            opacity: 0.6;
+            transform: translateY(0);
+        }
+
+        /* Q4 的光标闪烁 */
+        .cursor-blink {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #fff;
+            animation: blink 1s step-end infinite;
+            vertical-align: bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* 第一层暗示：页脚年份 */
+        .footer-hint {
+            font-size: 10px;
+            color: #333;
+            letter-spacing: 0.05em;
+            transition: color 0.5s;
+        }
+        .footer-hint:hover {
+            color: #666; /* 鼠标放上去才稍微亮一点 */
+        }
+
+        /* 隐形交互区域 */
+        .inquiry-btn {
+            position: absolute;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            cursor: pointer;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
-        .value-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            color: #ccc;
-            font-size: 0.9rem;
-        }
-
-        .value-list li::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #f72585;
-            border-radius: 50%;
-        }
-
-        /* Footer / CTA */
-        .footer {
-            text-align: center;
-            padding: 80px 0;
-            border-top: 1px solid var(--card-border);
-            position: relative;
-        }
-
-        .cta-box {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 30px;
-            background: #fff;
-            color: #000;
-            padding: 18px 40px;
-            border-radius: 100px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            text-decoration: none;
-            transition: transform 0.2s ease;
-        }
-
-        .cta-button:hover {
-            transform: scale(1.05);
-        }
-
-        .copyright {
-            margin-top: 80px;
-            font-size: 0.8rem;
-            color: #444;
-        }
-
-        /* Utility for the math visualization */
-        .math-visual {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-        .dot {
-            width: 12px;
-            height: 12px;
-            background: #333;
-            border-radius: 2px;
-        }
-        .dot.active {
-            background: #f72585;
-            box-shadow: 0 0 10px #f72585;
+        .inquiry-btn:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.02);
         }
 
     </style>
 </head>
-<body>
-    <!-- Texture Overlay -->
-    <div class="noise"></div>
-    
-    <!-- Ambient Light -->
-    <div class="glow-orb orb-1"></div>
-    <div class="glow-orb orb-2"></div>
+<body class="h-screen flex flex-col justify-center items-center relative select-none">
 
-    <div class="container">
-        <header>
-            <div class="logo">2².ai</div>
-            <a href="mailto:kf@le.cn" class="contact-btn">Inquire Price</a>
-        </header>
-
-        <!-- Hero -->
-        <section class="hero">
-            <h1 class="main-title">2<sup>2</sup>.ai</h1>
-            <p class="subtitle">
-                The intersection of mathematical perfection and artificial intelligence. 
-                <br>Short. Logical. Exponential.
-            </p>
-        </section>
-
-        <!-- Bento Grid -->
-        <section class="grid-section">
-            <!-- Card 1: The Math -->
-            <div class="bento-card card-medium">
-                <div>
-                    <div class="math-visual">
-                        <div class="dot active"></div><div class="dot active"></div>
-                    </div>
-                    <div class="math-visual">
-                        <div class="dot active"></div><div class="dot active"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="math-highlight">2² = 4</div>
-                    <h3 class="card-title">Universal Logic</h3>
-                    <p class="card-desc">Before language, there was math. "Two squared" is understood globally without translation. It symbolizes exponential growth and foundational strength.</p>
-                </div>
-            </div>
-
-            <!-- Card 2: The AI Context -->
-            <div class="bento-card card-medium">
-                <div class="card-icon">✦</div>
-                <div>
-                    <h3 class="card-title">The AI Era Asset</h3>
-                    <p class="card-desc">In the age of algorithms, mathematical domains are the ultimate status symbol. Short, memorable, and deeply relevant to computation and neural networks.</p>
-                </div>
-            </div>
-
-            <!-- Card 3: Scarcity -->
-            <div class="bento-card card-small">
-                <h3 class="card-title">Rarity</h3>
-                <p class="card-desc">Only a handful of single-digit squared domains exist. This is "Digital Gold" for the Web3 and AGI generation.</p>
-            </div>
-
-            <!-- Card 4: Use Cases -->
-            <div class="bento-card card-small">
-                <h3 class="card-title">Application</h3>
-                <ul class="value-list">
-                    <li>LLM Models</li>
-                    <li>Quantitative Trading</li>
-                    <li>Educational Tech</li>
-                    <li>Venture Capital</li>
-                </ul>
-            </div>
-
-            <!-- Card 5: Investment -->
-            <div class="bento-card card-small">
-                <h3 class="card-title">Valuation</h3>
-                <p class="card-desc">Comparable 2-character .ai domains have consistently traded in the 6-figure USD range.</p>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="cta-box">
-                <h2 style="font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 15px;">Acquire this Asset</h2>
-                <p style="color: var(--text-secondary);">This domain is currently held in a private portfolio. Serious offers are being considered.</p>
-                
-                <a href="mailto:kf@le.cn" class="cta-button">
-                    Make an Offer <span style="font-size: 1.2em;">→</span>
-                </a>
-            </div>
-            <p class="copyright">© 2025 2².ai | Premium Digital Asset</p>
-        </footer>
+    <!-- 调试开关 (实际部署时可删除，或保留给自己测试) -->
+    <div class="absolute top-4 right-4 flex gap-2 opacity-10 hover:opacity-100 transition-opacity z-50">
+        <button onclick="setQuarter(1)" class="text-xs border p-1">Q1</button>
+        <button onclick="setQuarter(2)" class="text-xs border p-1">Q2</button>
+        <button onclick="setQuarter(3)" class="text-xs border p-1">Q3</button>
+        <button onclick="setQuarter(4)" class="text-xs border p-1">Q4</button>
     </div>
 
-    <script>
-        // Simple parallax effect for the glow orbs
-        document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.glow-orb');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
+    <!-- 核心视觉 -->
+    <main class="text-center z-10 relative">
+        <h1 class="text-[12rem] md:text-[20rem] master-number relative">
+            22<span class="text-2xl md:text-4xl absolute top-10 right-[-2rem] font-light tracking-widest text-gray-600">.ai</span>
+        </h1>
 
-            orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 20;
-                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
-            });
-        });
+        <!-- 第二层：季度轮换副标题 -->
+        <div id="dynamic-subtitle" class="subtitle-text mt-8 h-8">
+            <!-- JS Will Inject Content Here -->
+        </div>
+
+        <!-- 第三层：隐形询盘通道 -->
+        <!-- 只有鼠标悬停在特定区域，才会显现出极简的联系方式 -->
+        <a id="contact-link" href="mailto:bridge@22.ai" class="inquiry-btn text-xs tracking-[0.3em] text-gray-500 uppercase">
+            Inquire Asset
+        </a>
+    </main>
+
+    <!-- 第一层：视觉植入 (年度彩蛋) -->
+    <footer class="absolute bottom-6 w-full text-center">
+        <div class="footer-hint">
+            Est. 2026 <span class="mx-1 opacity-50">—</span> 22nd Century
+        </div>
+    </footer>
+
+    <script>
+        // 核心逻辑：获取当前时间并设置状态
+        function initTimeline() {
+            const now = new Date();
+            const month = now.getMonth() + 1; // 1-12
+            
+            let quarter = 1;
+            if (month >= 4 && month <= 6) quarter = 2;
+            else if (month >= 7 && month <= 9) quarter = 3;
+            else if (month >= 10) quarter = 4;
+
+            setQuarter(quarter);
+        }
+
+        function setQuarter(q) {
+            const subtitleEl = document.getElementById('dynamic-subtitle');
+            const linkEl = document.getElementById('contact-link');
+            
+            // 重置动画
+            subtitleEl.classList.remove('subtitle-visible');
+            
+            setTimeout(() => {
+                // 内容与通道轮换逻辑
+                switch(q) {
+                    case 1: // Q1: 金融科技月 (Squared)
+                        subtitleEl.innerHTML = 'S Q U A R E D';
+                        linkEl.href = "mailto:squared@22.ai?subject=Alpha Protocol Inquiry";
+                        subtitleEl.style.color = "#a3a3a3"; // 银灰色
+                        break;
+                        
+                    case 2: // Q2: 灵性科技月 (Master Builder)
+                        subtitleEl.innerHTML = 'M A S T E R &nbsp; B U I L D E R';
+                        linkEl.href = "mailto:bridge@22.ai?subject=Architecture Inquiry";
+                        subtitleEl.style.color = "#d4af37"; // 暗金色
+                        break;
+                        
+                    case 3: // Q3: 未来主义月 (Century)
+                        subtitleEl.innerHTML = 'C E N T U R Y';
+                        // 只有 Q3 开启顶级通道
+                        linkEl.href = "mailto:century@22.ai?subject=Centennial Acquisition"; 
+                        subtitleEl.style.color = "#ffffff"; // 纯白，极致高亮
+                        break;
+                        
+                    case 4: // Q4: 留白 (买家填空)
+                        subtitleEl.innerHTML = '<span class="cursor-blink"></span>';
+                        linkEl.href = "mailto:bridge@22.ai?subject=Undefined Future";
+                        break;
+                }
+                
+                // 触发淡入
+                subtitleEl.classList.add('subtitle-visible');
+            }, 300);
+        }
+
+        // 初始化
+        window.onload = initTimeline;
     </script>
 </body>
 </html>
