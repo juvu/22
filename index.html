@@ -3,190 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>22.ai | The Master Number</title>
+    <title>22.ai | The Underlying Order</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100;400;900&family=Cinzel:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Cormorant+Garamond:ital,wght@1,400&display=swap');
 
         :root {
-            --bg-color: #080808;
-            --text-color: #e5e5e5;
-            --accent-color: #333;
+            --bg-color: #030304; /* 接近绝对黑的深灰 */
+            --text-primary: #e5e5e5;
+            --grid-color: rgba(255, 255, 255, 0.03); /* 极淡的灰线 3% 透明度 */
+            --node-color: rgba(255, 255, 255, 0.08);
+            --highlight-color: rgba(255, 255, 255, 0.4);
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Space Mono', monospace; /* 基础字体：数据感 */
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
             overflow: hidden;
-            transition: all 0.5s ease;
+            margin: 0;
+            cursor: crosshair; /* 十字准星鼠标，强化精确感 */
         }
 
-        /* 巨型主标题 */
-        .master-number {
-            font-family: 'Archivo', sans-serif;
-            font-weight: 900;
-            letter-spacing: -0.05em;
+        /* 背景 Canvas */
+        #math-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none; /* 让鼠标事件穿透到 body */
+        }
+
+        /* 主标题 */
+        .title-glitch {
+            font-size: clamp(6rem, 20vw, 16rem);
+            font-weight: 700;
             line-height: 0.8;
-            background: linear-gradient(180deg, #fff 0%, #666 100%);
+            letter-spacing: -0.05em;
+            background: linear-gradient(180deg, #fff 20%, #444 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             opacity: 0.95;
+            z-index: 10;
         }
 
-        /* 副标题风格：根据季度变化 */
+        /* 极简副标题容器 */
+        .subtitle-container {
+            height: 2rem;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .subtitle-text {
-            font-family: 'Cinzel', serif; /* 罗马碑文感 */
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            opacity: 0; /* 初始隐藏，JS淡入 */
+            font-family: 'Cormorant Garamond', serif; /* 衬线体带来数学论文的质感 */
+            font-style: italic;
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            color: #666;
+            opacity: 0;
             transform: translateY(10px);
-            transition: all 1s ease;
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .subtitle-visible {
-            opacity: 0.6;
+            opacity: 1;
             transform: translateY(0);
         }
 
-        /* Q4 的光标闪烁 */
-        .cursor-blink {
-            display: inline-block;
-            width: 10px;
-            height: 1.2em;
-            background-color: #fff;
-            animation: blink 1s step-end infinite;
-            vertical-align: bottom;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* 第一层暗示：页脚年份 */
-        .footer-hint {
-            font-size: 10px;
-            color: #333;
-            letter-spacing: 0.05em;
-            transition: color 0.5s;
-        }
-        .footer-hint:hover {
-            color: #666; /* 鼠标放上去才稍微亮一点 */
-        }
-
-        /* 隐形交互区域 */
-        .inquiry-btn {
+        /* 隐形询盘层 */
+        .ghost-layer {
             position: absolute;
-            bottom: 30%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            cursor: pointer;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none; /* 默认不挡鼠标 */
         }
-        
-        .inquiry-btn:hover {
+
+        .inquiry-trigger {
+            pointer-events: auto; /* 只有这块区域接受鼠标 */
+            padding: 40px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .inquiry-trigger:hover {
             opacity: 1;
-            background: rgba(255,255,255,0.02);
+        }
+
+        .inquiry-btn {
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            padding: 12px 24px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #888;
+        }
+        .inquiry-btn:hover {
+            color: #fff;
+            border-color: #fff;
+        }
+
+        /* 22nd Century 暗示 */
+        .century-hint {
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
+            text-align: center;
+            font-size: 0.65rem;
+            color: #222; /* 极暗，几乎看不见 */
+            letter-spacing: 0.05em;
+            font-family: monospace;
+            transition: color 0.8s;
+            z-index: 10;
+        }
+        .century-hint:hover {
+            color: #555;
         }
 
     </style>
 </head>
-<body class="h-screen flex flex-col justify-center items-center relative select-none">
+<body>
 
-    <!-- 调试开关 (实际部署时可删除，或保留给自己测试) -->
-    <div class="absolute top-4 right-4 flex gap-2 opacity-10 hover:opacity-100 transition-opacity z-50">
-        <button onclick="setQuarter(1)" class="text-xs border p-1">Q1</button>
-        <button onclick="setQuarter(2)" class="text-xs border p-1">Q2</button>
-        <button onclick="setQuarter(3)" class="text-xs border p-1">Q3</button>
-        <button onclick="setQuarter(4)" class="text-xs border p-1">Q4</button>
-    </div>
+    <!-- 背景：数学网格 -->
+    <canvas id="math-grid"></canvas>
 
-    <!-- 核心视觉 -->
-    <main class="text-center z-10 relative">
-        <h1 class="text-[12rem] md:text-[20rem] master-number relative">
-            22<span class="text-2xl md:text-4xl absolute top-10 right-[-2rem] font-light tracking-widest text-gray-600">.ai</span>
-        </h1>
+    <!-- 核心内容 -->
+    <main class="h-screen flex flex-col justify-center items-center relative z-10">
+        <!-- 22.ai -->
+        <h1 class="title-glitch select-none">22<span class="text-3xl font-light text-gray-700 align-top opacity-50">.ai</span></h1>
 
-        <!-- 第二层：季度轮换副标题 -->
-        <div id="dynamic-subtitle" class="subtitle-text mt-8 h-8">
-            <!-- JS Will Inject Content Here -->
+        <!-- 季度轮换副标题 -->
+        <div class="subtitle-container">
+            <div id="dynamic-subtitle" class="subtitle-text">
+                <!-- JS 注入 -->
+            </div>
         </div>
 
-        <!-- 第三层：隐形询盘通道 -->
-        <!-- 只有鼠标悬停在特定区域，才会显现出极简的联系方式 -->
-        <a id="contact-link" href="mailto:bridge@22.ai" class="inquiry-btn text-xs tracking-[0.3em] text-gray-500 uppercase">
-            Inquire Asset
-        </a>
+        <!-- 隐形触发层 -->
+        <div class="ghost-layer">
+            <!-- 只有鼠标悬停在屏幕正中心下方时，才会显示 -->
+            <div class="inquiry-trigger mt-64">
+                <a id="contact-link" href="#" class="inquiry-btn">
+                    Inquire Asset
+                </a>
+            </div>
+        </div>
     </main>
 
-    <!-- 第一层：视觉植入 (年度彩蛋) -->
-    <footer class="absolute bottom-6 w-full text-center">
-        <div class="footer-hint">
-            Est. 2026 <span class="mx-1 opacity-50">—</span> 22nd Century
-        </div>
-    </footer>
+    <!-- 底部暗示 -->
+    <div class="century-hint">
+        Est. 2026 &nbsp;&bull;&nbsp; 22nd Century Infrastructure
+    </div>
 
+    <!-- 逻辑脚本 -->
     <script>
-        // 核心逻辑：获取当前时间并设置状态
-        function initTimeline() {
-            const now = new Date();
-            const month = now.getMonth() + 1; // 1-12
-            
-            let quarter = 1;
-            if (month >= 4 && month <= 6) quarter = 2;
-            else if (month >= 7 && month <= 9) quarter = 3;
-            else if (month >= 10) quarter = 4;
+        /**
+         * 1. 视觉逻辑：绘制极淡的二项式展开 (帕斯卡三角) 网格
+         */
+        const canvas = document.getElementById('math-grid');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let mouseX = -1000, mouseY = -1000;
 
-            setQuarter(quarter);
+        // 节点配置
+        const rows = 12; // 三角形的层数
+        const nodeRadius = 2; 
+        const spacingY = 60; // 层距
+        
+        let nodes = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initNodes();
         }
 
-        function setQuarter(q) {
-            const subtitleEl = document.getElementById('dynamic-subtitle');
-            const linkEl = document.getElementById('contact-link');
-            
-            // 重置动画
-            subtitleEl.classList.remove('subtitle-visible');
-            
-            setTimeout(() => {
-                // 内容与通道轮换逻辑
-                switch(q) {
-                    case 1: // Q1: 金融科技月 (Squared)
-                        subtitleEl.innerHTML = 'S Q U A R E D';
-                        linkEl.href = "mailto:squared@22.ai?subject=Alpha Protocol Inquiry";
-                        subtitleEl.style.color = "#a3a3a3"; // 银灰色
-                        break;
-                        
-                    case 2: // Q2: 灵性科技月 (Master Builder)
-                        subtitleEl.innerHTML = 'M A S T E R &nbsp; B U I L D E R';
-                        linkEl.href = "mailto:bridge@22.ai?subject=Architecture Inquiry";
-                        subtitleEl.style.color = "#d4af37"; // 暗金色
-                        break;
-                        
-                    case 3: // Q3: 未来主义月 (Century)
-                        subtitleEl.innerHTML = 'C E N T U R Y';
-                        // 只有 Q3 开启顶级通道
-                        linkEl.href = "mailto:century@22.ai?subject=Centennial Acquisition"; 
-                        subtitleEl.style.color = "#ffffff"; // 纯白，极致高亮
-                        break;
-                        
-                    case 4: // Q4: 留白 (买家填空)
-                        subtitleEl.innerHTML = '<span class="cursor-blink"></span>';
-                        linkEl.href = "mailto:bridge@22.ai?subject=Undefined Future";
-                        break;
-                }
+        function initNodes() {
+            nodes = [];
+            // 从屏幕中心偏上开始绘制
+            const startX = width / 2;
+            const startY = height / 2 - (rows * spacingY) / 2;
+
+            for (let i = 0; i < rows; i++) {
+                // 每一层的节点数 = i + 1
+                // 每一层的宽度 = i * spacingX
+                // 二项式分布会让底部变宽
+                const spacingX = width / (rows + 2) * 1.5; // 动态宽度
                 
-                // 触发淡入
-                subtitleEl.classList.add('subtitle-visible');
-            }, 300);
+                for (let j = 0; j <= i; j++) {
+                    const x = startX - (i * spacingX) / 2 + j * spacingX;
+                    const y = startY + i * spacingY;
+                    
+                    // 父节点索引 (用于连线)
+                    let parents = [];
+                    if (i > 0) {
+                        // 寻找上一层的邻居
+                        // 这是一个简化的视觉连线，不是严格的算法
+                        // 上一层中心点 x_prev = startX - ((i-1)*spacingX)/2 + k*spacingX
+                        // 简单几何连线即可
+                    }
+
+                    nodes.push({ x, y, r: i, c: j });
+                }
+            }
         }
 
-        // 初始化
-        window.onload = initTimeline;
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            // 1. 绘制连线 (二项式路径)
+            ctx.lineWidth = 1;
+            
+            nodes.forEach((node, index) => {
+                // 计算与鼠标的距离，产生高亮
+                const dist = Math.hypot(node.x - mouseX, node.y - mouseY);
+                const isHover = dist < 150;
+                
+                // 基础透明度 0.03，高亮时 0.2
+                const alpha = isHover ? 0.2 : 0.03;
+                
+                // 找下一层的“孩子”进行连线
+                // 简单的视觉逻辑：连向下一层的左下和右下
+                const nextRowNodes = nodes.filter(n => n.r === node.r + 1);
+                nextRowNodes.forEach(child => {
+                    // 如果横向距离合适，就认为是孩子
+                    if (Math.abs(child.x - node.x) < width / (rows + 2)) {
+                        ctx.beginPath();
+                        ctx.moveTo(node.x, node.y);
+                        ctx.lineTo(child.x, child.y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                        ctx.stroke();
+                    }
+                });
+
+                // 2. 绘制节点
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
+                ctx.fillStyle = isHover ? `rgba(255,255,255,0.6)` : `rgba(255,255,255,0.08)`;
+                ctx.fill();
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // 初始化 Canvas
+        resize();
+        draw();
+
+        /**
+         * 2. 业务逻辑：季度轮换与邮箱分层
+         */
+        function initBusinessLogic() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            let quarter = Math.ceil(month / 3);
+
+            const subEl = document.getElementById('dynamic-subtitle');
+            const linkEl = document.getElementById('contact-link');
+
+            // 定义不同季度的配置
+            // Q1: Squared (数学/金融) - 西方金融叙事
+            // Q2: Master Builder (建筑/灵性) - 22的大师数含义
+            // Q3: Century (时间/未来) - 22世纪叙事
+            // Q4: [Void] - 留白
+            
+            const configs = {
+                1: { 
+                    text: '( a + b )²', 
+                    email: 'squared@22.ai', 
+                    subject: 'Quantitative Asset Inquiry' 
+                },
+                2: { 
+                    text: 'The Master Builder', 
+                    email: 'bridge@22.ai', 
+                    subject: 'Strategic Infrastructure Inquiry' 
+                },
+                3: { 
+                    text: 'C E N T U R Y', 
+                    email: 'century@22.ai', 
+                    subject: 'Centennial Acquisition' // 顶级触发词
+                },
+                4: { 
+                    text: '_', 
+                    email: 'hello@22.ai', 
+                    subject: 'Undefined Future' 
+                }
+            };
+
+            const current = configs[quarter] || configs[1]; // 默认Q1
+
+            // 渲染内容
+            subEl.innerText = current.text;
+            linkEl.href = `mailto:${current.email}?subject=${current.subject}`;
+
+            // 延迟淡入动画
+            setTimeout(() => {
+                subEl.classList.add('subtitle-visible');
+            }, 500);
+        }
+
+        initBusinessLogic();
+
     </script>
 </body>
 </html>
