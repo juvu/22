@@ -9,11 +9,10 @@
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Cormorant+Garamond:ital,wght@1,400&display=swap');
 
         :root {
-            --bg-color: #030304; /* 接近绝对黑的深灰 */
+            --bg-color: #030304;
             --text-primary: #e5e5e5;
-            --grid-color: rgba(255, 255, 255, 0.03); /* 极淡的灰线 3% 透明度 */
-            --node-color: rgba(255, 255, 255, 0.08);
-            --highlight-color: rgba(255, 255, 255, 0.4);
+            --grid-idle: rgba(255, 255, 255, 0.02);
+            --grid-active: rgba(255, 255, 255, 0.15);
         }
 
         body {
@@ -22,7 +21,7 @@
             font-family: 'Space Grotesk', sans-serif;
             overflow: hidden;
             margin: 0;
-            cursor: crosshair; /* 十字准星鼠标，强化精确感 */
+            cursor: crosshair;
         }
 
         /* 背景 Canvas */
@@ -33,10 +32,10 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            pointer-events: none; /* 让鼠标事件穿透到 body */
+            pointer-events: none;
         }
 
-        /* 主标题 */
+        /* 主标题 - 增加排版细节暗示 2 的平方 */
         .title-glitch {
             font-size: clamp(6rem, 20vw, 16rem);
             font-weight: 700;
@@ -47,6 +46,7 @@
             -webkit-text-fill-color: transparent;
             opacity: 0.95;
             z-index: 10;
+            position: relative;
         }
 
         /* 极简副标题容器 */
@@ -59,7 +59,7 @@
         }
 
         .subtitle-text {
-            font-family: 'Cormorant Garamond', serif; /* 衬线体带来数学论文的质感 */
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             font-size: 1.2rem;
             letter-spacing: 0.1em;
@@ -85,11 +85,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            pointer-events: none; /* 默认不挡鼠标 */
+            pointer-events: none;
         }
 
         .inquiry-trigger {
-            pointer-events: auto; /* 只有这块区域接受鼠标 */
+            pointer-events: auto;
             padding: 40px;
             opacity: 0;
             transition: opacity 0.6s ease;
@@ -108,20 +108,23 @@
             text-transform: uppercase;
             letter-spacing: 0.2em;
             color: #888;
+            text-decoration: none;
+            transition: all 0.3s;
         }
         .inquiry-btn:hover {
             color: #fff;
             border-color: #fff;
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
         }
 
-        /* 22nd Century 暗示 */
+        /* 底部暗示 */
         .century-hint {
             position: absolute;
             bottom: 2rem;
             width: 100%;
             text-align: center;
             font-size: 0.65rem;
-            color: #222; /* 极暗，几乎看不见 */
+            color: #222;
             letter-spacing: 0.05em;
             font-family: monospace;
             transition: color 0.8s;
@@ -135,15 +138,15 @@
 </head>
 <body>
 
-    <!-- 背景：数学网格 -->
+    <!-- 矩阵网络背景 -->
     <canvas id="math-grid"></canvas>
 
     <!-- 核心内容 -->
     <main class="h-screen flex flex-col justify-center items-center relative z-10">
-        <!-- 22.ai -->
+        <!-- 22.ai / 视觉上可解读为 2².ai -->
         <h1 class="title-glitch select-none">22<span class="text-3xl font-light text-gray-700 align-top opacity-50">.ai</span></h1>
 
-        <!-- 季度轮换副标题 -->
+        <!-- 动态副标题 -->
         <div class="subtitle-container">
             <div id="dynamic-subtitle" class="subtitle-text">
                 <!-- JS 注入 -->
@@ -152,107 +155,151 @@
 
         <!-- 隐形触发层 -->
         <div class="ghost-layer">
-            <!-- 只有鼠标悬停在屏幕正中心下方时，才会显示 -->
             <div class="inquiry-trigger mt-64">
                 <a id="contact-link" href="#" class="inquiry-btn">
-                    Inquire Asset
+                    Initialize Tensor
                 </a>
             </div>
         </div>
     </main>
 
-    <!-- 底部暗示 -->
+    <!-- 底部标识 -->
     <div class="century-hint">
-        Est. 2026 &nbsp;&bull;&nbsp; 22nd Century Infrastructure
+        Quadratic Complexity &nbsp;&bull;&nbsp; O(N²) Infrastructure
     </div>
 
     <!-- 逻辑脚本 -->
     <script>
         /**
-         * 1. 视觉逻辑：绘制极淡的二项式展开 (帕斯卡三角) 网格
+         * 1. 视觉逻辑：矩阵相乘 (Matrix Multiplication)
+         * 模拟 C(i,j) = Row(i) * Col(j) 的点积过程
          */
         const canvas = document.getElementById('math-grid');
         const ctx = canvas.getContext('2d');
         let width, height;
         let mouseX = -1000, mouseY = -1000;
 
-        // 节点配置
-        const rows = 12; // 三角形的层数
-        const nodeRadius = 2; 
-        const spacingY = 60; // 层距
-        
-        let nodes = [];
+        const spacing = 60; // 矩阵单元格大小
+        let cols, rows;
+        let offsetX, offsetY;
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            initNodes();
+            
+            cols = Math.floor(width / spacing);
+            rows = Math.floor(height / spacing);
+            
+            // 居中偏移量
+            offsetX = (width - cols * spacing) / 2;
+            offsetY = (height - rows * spacing) / 2;
         }
 
-        function initNodes() {
-            nodes = [];
-            // 从屏幕中心偏上开始绘制
-            const startX = width / 2;
-            const startY = height / 2 - (rows * spacingY) / 2;
-
-            for (let i = 0; i < rows; i++) {
-                // 每一层的节点数 = i + 1
-                // 每一层的宽度 = i * spacingX
-                // 二项式分布会让底部变宽
-                const spacingX = width / (rows + 2) * 1.5; // 动态宽度
-                
-                for (let j = 0; j <= i; j++) {
-                    const x = startX - (i * spacingX) / 2 + j * spacingX;
-                    const y = startY + i * spacingY;
-                    
-                    // 父节点索引 (用于连线)
-                    let parents = [];
-                    if (i > 0) {
-                        // 寻找上一层的邻居
-                        // 这是一个简化的视觉连线，不是严格的算法
-                        // 上一层中心点 x_prev = startX - ((i-1)*spacingX)/2 + k*spacingX
-                        // 简单几何连线即可
-                    }
-
-                    nodes.push({ x, y, r: i, c: j });
-                }
-            }
-        }
+        // 动画时间戳（用于数据流动画）
+        let time = 0;
 
         function draw() {
             ctx.clearRect(0, 0, width, height);
+            time += 0.02;
 
-            // 1. 绘制连线 (二项式路径)
-            ctx.lineWidth = 1;
+            // 寻找离鼠标最近的行与列（模拟激活的 Matrix C_{i,j} 节点）
+            let activeCol = -1;
+            let activeRow = -1;
             
-            nodes.forEach((node, index) => {
-                // 计算与鼠标的距离，产生高亮
-                const dist = Math.hypot(node.x - mouseX, node.y - mouseY);
-                const isHover = dist < 150;
+            // 只有当鼠标在屏幕内时才激活
+            if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
+                activeCol = Math.round((mouseX - offsetX) / spacing);
+                activeRow = Math.round((mouseY - offsetY) / spacing);
                 
-                // 基础透明度 0.03，高亮时 0.2
-                const alpha = isHover ? 0.2 : 0.03;
-                
-                // 找下一层的“孩子”进行连线
-                // 简单的视觉逻辑：连向下一层的左下和右下
-                const nextRowNodes = nodes.filter(n => n.r === node.r + 1);
-                nextRowNodes.forEach(child => {
-                    // 如果横向距离合适，就认为是孩子
-                    if (Math.abs(child.x - node.x) < width / (rows + 2)) {
-                        ctx.beginPath();
-                        ctx.moveTo(node.x, node.y);
-                        ctx.lineTo(child.x, child.y);
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                        ctx.stroke();
-                    }
-                });
+                // 边界限制
+                if (activeCol < 0) activeCol = 0;
+                if (activeCol > cols) activeCol = cols;
+                if (activeRow < 0) activeRow = 0;
+                if (activeRow > rows) activeRow = rows;
+            }
 
-                // 2. 绘制节点
+            // --- 绘制矩阵的行 (Matrix A 的横向向量) ---
+            for(let r = 0; r <= rows; r++) {
+                const y = offsetY + r * spacing;
+                const isActive = (r === activeRow);
+                
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
-                ctx.fillStyle = isHover ? `rgba(255,255,255,0.6)` : `rgba(255,255,255,0.08)`;
-                ctx.fill();
-            });
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.strokeStyle = isActive ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.02)';
+                ctx.lineWidth = isActive ? 1.5 : 1;
+                ctx.stroke();
+
+                // 如果是激活行，绘制数据流 (流向交点)
+                if (isActive && activeCol !== -1) {
+                    const targetX = offsetX + activeCol * spacing;
+                    const flowX = (time * 200) % width; // 循环流动
+                    if (flowX < targetX) { // 汇聚到交点前
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                        ctx.fillRect(flowX, y - 1, 10, 2);
+                    }
+                }
+            }
+
+            // --- 绘制矩阵的列 (Matrix B 的纵向向量) ---
+            for(let c = 0; c <= cols; c++) {
+                const x = offsetX + c * spacing;
+                const isActive = (c === activeCol);
+                
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.strokeStyle = isActive ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.02)';
+                ctx.lineWidth = isActive ? 1.5 : 1;
+                ctx.stroke();
+
+                // 如果是激活列，绘制数据流 (流向交点)
+                if (isActive && activeRow !== -1) {
+                    const targetY = offsetY + activeRow * spacing;
+                    const flowY = (time * 200) % height;
+                    if (flowY < targetY) {
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                        ctx.fillRect(x - 1, flowY, 2, 10);
+                    }
+                }
+            }
+
+            // --- 绘制交汇节点 (Dot Product Result) ---
+            for (let c = 0; c <= cols; c++) {
+                for (let r = 0; r <= rows; r++) {
+                    const x = offsetX + c * spacing;
+                    const y = offsetY + r * spacing;
+                    
+                    const isCenter = (c === activeCol && r === activeRow);
+                    const isAxis = (c === activeCol || r === activeRow);
+                    
+                    ctx.beginPath();
+                    if (isCenter) {
+                        // 核心计算节点 C_{i,j}
+                        ctx.arc(x, y, 4, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = 'rgba(255,255,255,0.5)';
+                        
+                        // 绘制矩阵数学符号暗示
+                        ctx.font = '10px monospace';
+                        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                        ctx.fillText(`C(${r},${c})`, x + 10, y - 10);
+                        
+                    } else if (isAxis) {
+                        // 参与点积运算的向量节点
+                        ctx.arc(x, y, 2, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                        ctx.shadowBlur = 0;
+                    } else {
+                        // 沉寂节点
+                        ctx.arc(x, y, 1, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(255,255,255,0.05)';
+                        ctx.shadowBlur = 0;
+                    }
+                    ctx.fill();
+                }
+            }
 
             requestAnimationFrame(draw);
         }
@@ -262,52 +309,48 @@
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
+        window.addEventListener('mouseout', () => {
+            // 鼠标移出屏幕时重置
+            mouseX = -1000;
+            mouseY = -1000;
+        });
 
         // 初始化 Canvas
         resize();
         draw();
 
         /**
-         * 2. 业务逻辑：季度轮换与邮箱分层
+         * 2. 业务逻辑：季度轮换与邮箱分层 (矩阵/算力主题)
          */
         function initBusinessLogic() {
-            const now = new Date();
-            const month = now.getMonth() + 1;
-            let quarter = Math.ceil(month / 3);
-
             const subEl = document.getElementById('dynamic-subtitle');
             const linkEl = document.getElementById('contact-link');
 
-            // 定义不同季度的配置
-            // Q1: Squared (数学/金融) - 西方金融叙事
-            // Q2: Master Builder (建筑/灵性) - 22的大师数含义
-            // Q3: Century (时间/未来) - 22世纪叙事
-            // Q4: [Void] - 留白
-            
+            // 定义不同季度的配置 (契合二次方和矩阵运算的叙事)
             const configs = {
                 1: { 
-                    text: '( a + b )²', 
-                    email: 'contact@dn.com', 
-                    subject: 'Quantitative Asset Inquiry' 
+                    text: 'O ( N² )',  // 代表二次方时间复杂度
+                    email: 'contact@22.ai', 
+                    subject: 'Quadratic Asset Inquiry' 
                 },
                 2: { 
-                    text: 'The Master Builder', 
-                    email: 'bridge@22.ai', 
-                    subject: 'Strategic Infrastructure Inquiry' 
+                    text: 'A × B = C', // 代表矩阵相乘
+                    email: 'matrix@22.ai', 
+                    subject: 'Matrix Logic Inquiry' 
                 },
                 3: { 
-                    text: 'C E N T U R Y', 
-                    email: 'century@22.ai', 
-                    subject: 'Centennial Acquisition' // 顶级触发词
+                    text: 'T E N S O R', // 代表高维矩阵运算
+                    email: 'tensor@22.ai', 
+                    subject: 'Tensor Core Acquisition' 
                 },
                 4: { 
-                    text: '_', 
+                    text: 'Exponential Growth', // 代表指数级跃迁
                     email: 'hello@22.ai', 
-                    subject: 'Undefined Future' 
+                    subject: 'Exponential Infrastructure' 
                 }
             };
 
-            const current =  configs[1]; // 默认Q1
+            const current = configs[1]; // 默认使用 Q1 的配置
 
             // 渲染内容
             subEl.innerText = current.text;
