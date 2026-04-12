@@ -35,7 +35,9 @@
             pointer-events: none;
         }
 
-        /* 主标题 - 增加排版细节暗示 2 的平方 */
+        
+
+          /* 主标题 - 增加排版细节暗示 2 的平方 */
         .title-glitch {
             font-size: clamp(6rem, 20vw, 16rem);
             font-weight: 700;
@@ -47,6 +49,9 @@
             opacity: 0.95;
             z-index: 10;
             position: relative;
+            
+            /* 修复 Webkit 下 background-clip 导致的字体右侧被边缘裁切的问题 */
+            padding-right: 0.1em; 
         }
 
         /* 极简副标题容器 */
@@ -350,7 +355,7 @@
                 }
             };
 
-            const current = configs[1]; // 默认使用 Q1 的配置
+            const current = configs[2]; // 默认使用 Q1 的配置
 
             // 渲染内容
             subEl.innerText = current.text;
