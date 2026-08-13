@@ -35,7 +35,18 @@
             pointer-events: none;
         }
 
-        
+        .title-domain {
+            display: inline-block;
+            margin-left: 0.45em; /* 拉开与第二个 2 的距离 */
+            vertical-align: top;
+            transform: translateY(-0.08em); /* 略微上移，形成上标感 */
+            font-size: 1.875rem;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: 0; /* 覆盖父级 -0.05em，避免 .ai 自身挤压 */
+            color: #374151;
+            opacity: 0.5;
+        }
 
           /* 主标题 - 增加排版细节暗示 2 的平方 */
         .title-glitch {
@@ -149,7 +160,7 @@
     <!-- 核心内容 -->
     <main class="h-screen flex flex-col justify-center items-center relative z-10">
         <!-- 22.ai / 视觉上可解读为 2².ai -->
-        <h1 class="title-glitch select-none">22<span class="text-3xl font-light text-gray-700 align-top opacity-50">.ai</span></h1>
+        <h1 class="title-glitch select-none">22<span class="title-domain">.ai</span></h1>
 
         <!-- 动态副标题 -->
         <div class="subtitle-container">
