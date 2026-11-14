@@ -2,387 +2,890 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>22.ai | The Underlying Order</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>22.ai — Tier-1 Sovereign .AI Domain Asset | Strategic Acquisition</title>
+    <meta name="description" content="22.ai (TwentyTwo / XXII) is a rare repeating two-digit .AI domain asset available for strategic corporate acquisition. Engineered for Human-Agent Duet platforms, Quantitative Macro Intelligence, and O(N²) Tensor Infrastructure.">
+    <meta name="robots" content="index, follow">
+
+    <!-- OpenGraph Metadata for Executive & Slack/Teams Link Previews -->
+    <meta property="og:title" content="22.ai — Sovereign .AI Domain Asset">
+    <meta property="og:description" content="TwentyTwo • XXII • Dual Intelligence & Quantitative Infrastructure. Available for strategic corporate acquisition via Escrow.com.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://22.ai">
+
+    <!-- Structured Data for AI Search Engines & Brand Counsel Discovery -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "DigitalDocument",
+      "name": "22.ai Domain Asset",
+      "alternateName": ["TwentyTwo AI", "XXII AI", "22 AI"],
+      "url": "https://22.ai",
+      "description": "Ultra-rare two-character repeating numeric .ai top-level domain available for institutional or corporate acquisition."
+    }
+    </script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Cormorant+Garamond:ital,wght@1,400&display=swap');
-
         :root {
-            --bg-color: #030304;
-            --text-primary: #e5e5e5;
-            --grid-idle: rgba(255, 255, 255, 0.02);
-            --grid-active: rgba(255, 255, 255, 0.15);
+            --bg-primary: #050507;
+            --bg-elevated: rgba(14, 15, 20, 0.88);
+            --text-primary: #f5f6f8;
+            --text-secondary: rgba(245, 246, 248, 0.58);
+            --text-muted: rgba(245, 246, 248, 0.34);
+            --border-subtle: rgba(255, 255, 255, 0.09);
+            --border-strong: rgba(255, 255, 255, 0.24);
+            --accent-glow: rgba(255, 255, 255, 0.85);
+            --status-green: #34d399;
+            --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", Menlo, Consolas, monospace;
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: 'Space Grotesk', sans-serif;
-            overflow: hidden;
+        * {
+            box-sizing: border-box;
             margin: 0;
-            cursor: crosshair;
+            padding: 0;
         }
 
-        /* 背景 Canvas */
-        #math-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
+        html, body {
             width: 100%;
             height: 100%;
-            z-index: -1;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Ambient Radial Vignette */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 48%, transparent 15%, rgba(5, 5, 7, 0.82) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #math-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            display: block;
+        }
+
+        /* Top Executive Telemetry Bar */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 36px;
             pointer-events: none;
         }
 
-        
+        .asset-id {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
 
-          /* 主标题 - 增加排版细节暗示 2 的平方 */
-        .title-glitch {
-            font-size: clamp(6rem, 20vw, 16rem);
-            font-weight: 700;
-            line-height: 0.8;
-            letter-spacing: -0.05em;
-            background: linear-gradient(180deg, #fff 20%, #444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0.95;
-            z-index: 10;
+        .status-badge {
+            pointer-events: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .status-badge:hover {
+            border-color: var(--border-strong);
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--status-green);
+            box-shadow: 0 0 10px var(--status-green);
+            animation: pulse 2.4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        /* Main Hero Container */
+        main {
             position: relative;
-            
-            /* 修复 Webkit 下 background-clip 导致的字体右侧被边缘裁切的问题 */
-            padding-right: 0.1em; 
-        }
-
-        /* 将域名后缀移出主数字的行内排版，避免压到第二个 2。 */
-        .domain-suffix {
-            position: absolute;
-            top: 0.1em;
-            left: calc(100% + 0.16em);
-            font-size: 1.875rem;
-            font-weight: 300;
-            line-height: 1;
-            letter-spacing: 0;
-            color: #555;
-            -webkit-text-fill-color: #555;
-            white-space: nowrap;
-        }
-
-        /* 极简副标题容器 */
-        .subtitle-container {
-            height: 2rem;
-            margin-top: 2rem;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 0 24px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .numeral-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-size: clamp(4.5rem, 12vw, 9rem);
+            font-weight: 600;
+            letter-spacing: -0.045em;
+            line-height: 0.95;
+            background: linear-gradient(180deg, #ffffff 20%, rgba(255, 255, 255, 0.62) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .domain-suffix {
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.32) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Rotating Strategic Narrative */
+        .subtitle-stage {
+            height: 32px;
+            margin-top: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .subtitle-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            letter-spacing: 0.1em;
-            color: #666;
+            font-family: var(--font-mono);
+            font-size: clamp(12px, 1.4vw, 14px);
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
             opacity: 0;
-            transform: translateY(10px);
-            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateY(5px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
         }
 
-        .subtitle-visible {
+        .subtitle-text.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* 隐形询盘层 */
-        .ghost-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 20;
+        /* Primary Acquisition Trigger */
+        .cta-wrapper {
+            margin-top: 54px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            gap: 14px;
+        }
+
+        .acquire-btn {
+            appearance: none;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 14px 34px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .acquire-btn:hover {
+            background: #ffffff;
+            color: #050507;
+            border-color: #ffffff;
+            box-shadow: 0 0 32px rgba(255, 255, 255, 0.22);
+            transform: translateY(-1px);
+        }
+
+        .settlement-note {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Bottom Architectural Footer */
+        .bottom-bar {
+            position: fixed;
+            bottom: 24px;
+            left: 36px;
+            right: 36px;
+            z-index: 15;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-muted);
             pointer-events: none;
         }
 
-        .inquiry-trigger {
-            pointer-events: auto;
-            padding: 40px;
+        /* Executive Inquiry Modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: rgba(3, 3, 5, 0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
             opacity: 0;
-            transition: opacity 0.6s ease;
+            visibility: hidden;
+            transition: opacity 0.28s ease, visibility 0.28s ease;
         }
 
-        .inquiry-trigger:hover {
+        .modal-backdrop.open {
             opacity: 1;
+            visibility: visible;
         }
 
-        .inquiry-btn {
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            padding: 12px 24px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: #888;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .inquiry-btn:hover {
-            color: #fff;
-            border-color: #fff;
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
-        }
-
-        /* 底部暗示 */
-        .century-hint {
-            position: absolute;
-            bottom: 2rem;
+        .modal-card {
             width: 100%;
-            text-align: center;
-            font-size: 0.65rem;
-            color: #222;
-            letter-spacing: 0.05em;
-            font-family: monospace;
-            transition: color 0.8s;
-            z-index: 10;
-        }
-        .century-hint:hover {
-            color: #555;
+            max-width: 500px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.85);
+            transform: translateY(12px) scale(0.98);
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        .modal-backdrop.open .modal-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        .modal-subtitle {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .asset-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 22px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .metric-val {
+            color: var(--text-primary);
+            margin-top: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+            padding: 11px 13px;
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: rgba(255, 255, 255, 0.45);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.5) 50%),
+                              linear-gradient(135deg, rgba(255,255,255,0.5) 50%, transparent 50%);
+            background-position: calc(100% - 16px) calc(50% - 2px), calc(100% - 11px) calc(50% - 2px);
+            background-size: 5px 5px, 5px 5px;
+            background-repeat: no-repeat;
+        }
+
+        select.form-control option {
+            background: #0d0e12;
+            color: #f5f6f8;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 6px;
+            padding: 13px 20px;
+            background: #ffffff;
+            color: #050507;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Webmail Fallback & Direct Copy Box */
+        .fallback-panel {
+            display: none;
+            margin-top: 16px;
+            padding: 14px;
+            background: rgba(52, 211, 153, 0.06);
+            border: 1px solid rgba(52, 211, 153, 0.28);
+            border-radius: 4px;
+        }
+
+        .fallback-panel.active {
+            display: block;
+        }
+
+        .fallback-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 9px 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .compliance-footer {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            .topbar { padding: 18px 20px; }
+            .asset-id { display: none; }
+            .bottom-bar {
+                left: 20px;
+                right: 20px;
+                bottom: 16px;
+                justify-content: center;
+                text-align: center;
+            }
+            .bottom-right { display: none; }
+            .modal-card { padding: 22px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 矩阵网络背景 -->
-    <canvas id="math-grid"></canvas>
+    <canvas id="math-grid" aria-hidden="true"></canvas>
 
-    <!-- 核心内容 -->
-    <main class="h-screen flex flex-col justify-center items-center relative z-10">
-        <!-- 22.ai / 视觉上可解读为 2².ai -->
-        <h1 class="title-glitch select-none">22<span class="domain-suffix">.ai</span></h1>
+    <!-- Top Institutional Bar -->
+    <header class="topbar">
+        <div class="asset-id">ASSET // 22.AI [TWENTYTWO • XXII]</div>
+        <button type="button" class="status-badge" id="top-inquire-btn">
+            <span class="status-dot"></span>
+            <span>Available for Acquisition</span>
+        </button>
+    </header>
 
-        <!-- 动态副标题 -->
-        <div class="subtitle-container">
-            <div id="dynamic-subtitle" class="subtitle-text">
-                <!-- JS 注入 -->
-            </div>
+    <!-- Centerpiece -->
+    <main>
+        <div class="numeral-eyebrow">TWENTYTWO &nbsp;•&nbsp; XXII &nbsp;•&nbsp; 2²</div>
+        <h1 class="hero-title">22<span class="domain-suffix">.ai</span></h1>
+
+        <div class="subtitle-stage">
+            <div id="dynamic-subtitle" class="subtitle-text visible">HUMAN × AGENT DUET</div>
         </div>
 
-        <!-- 隐形触发层 -->
-        <div class="ghost-layer">
-            <div class="inquiry-trigger mt-64">
-                <a id="contact-link" href="#" class="inquiry-btn">
-                    Initialize Tensor
-                </a>
+        <div class="cta-wrapper">
+            <button type="button" class="acquire-btn" id="main-acquire-btn">
+                Acquire 22.ai
+            </button>
+            <div class="settlement-note">
+                Escrow.com Concierge &nbsp;•&nbsp; Corporate NDA Supported
             </div>
         </div>
     </main>
 
-    <!-- 底部标识 -->
-    <div class="century-hint">
-        Quadratic Complexity &nbsp;&bull;&nbsp; O(N²) Infrastructure
+    <!-- Architectural Footer -->
+    <footer class="bottom-bar">
+        <div>DUAL INTELLIGENCE &nbsp;•&nbsp; O(N²) INFRASTRUCTURE</div>
+        <div class="bottom-right">1 OF 7 CLEAN REPEATING NUMERIC .AI ASSETS</div>
+    </footer>
+
+    <!-- Executive Acquisition Modal -->
+    <div class="modal-backdrop" id="inquiry-modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="modal-heading">Strategic Asset Inquiry — 22.ai</h2>
+                    <p class="modal-subtitle">Direct desk for corporate principals, quantitative institutions, and authorized acquisition counsel.</p>
+                </div>
+                <button type="button" class="close-btn" id="close-modal-btn" aria-label="Close modal">&times;</button>
+            </div>
+
+            <div class="asset-metrics">
+                <div>
+                    <div class="metric-label">Asset Class</div>
+                    <div class="metric-val">Tier-1 Repeating Numeric (.AI)</div>
+                </div>
+                <div>
+                    <div class="metric-label">Valuation Guidance</div>
+                    <div class="metric-val">Six-Figure USD ($100k+)</div>
+                </div>
+            </div>
+
+            <form id="acquisition-form">
+                <div class="form-group">
+                    <label class="form-label" for="buyer-name">Full Name &amp; Title *</label>
+                    <input class="form-control" type="text" id="buyer-name" required placeholder="e.g., Managing Partner / VP of Corporate Development">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="buyer-email">Corporate Email *</label>
+                    <input class="form-control" type="email" id="buyer-email" required placeholder="name@company.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="buyer-entity">Organization / Representation *</label>
+                    <input class="form-control" type="text" id="buyer-entity" required placeholder="Company Name, Fund, or Authorized Broker (MarkMonitor / CSC)">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="offer-tier">Transaction Framework (USD) *</label>
+                    <select class="form-control" id="offer-tier" required>
+                        <option value="Outright Acquisition ($150,000 - $250,000+ USD)">Outright Acquisition ($150,000 – $250,000+ USD)</option>
+                        <option value="Cash Offer ($100,000 - $150,000 USD)">Cash Offer ($100,000 – $150,000 USD)</option>
+                        <option value="Structured Corporate Lease-to-Own ($120k+ Equivalent)">Structured Corporate Lease-to-Own ($120,000+ USD)</option>
+                        <option value="Request Mutual NDA & Executive Valuation Brief">Request Mutual NDA &amp; Formal Valuation Brief</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="buyer-notes">Specific Offer or Settlement Notes</label>
+                    <input class="form-control" type="text" id="buyer-notes" placeholder="Optional offer figure, timeline, or NDA instructions">
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-inquiry-btn">
+                    Transmit Acquisition Brief
+                </button>
+            </form>
+
+            <!-- Webmail Safe Copy Fallback -->
+            <div class="fallback-panel" id="fallback-panel">
+                <div class="fallback-text">
+                    Your inquiry brief has been prepared. If your browser did not automatically launch a mail client, copy the formatted brief below and send directly to <strong id="display-email"></strong>:
+                </div>
+                <button type="button" class="copy-btn" id="copy-brief-btn">
+                    Copy Formatted Brief &amp; Desk Email
+                </button>
+            </div>
+
+            <div class="compliance-footer">
+                Clean Chain of Title &nbsp;•&nbsp; Escrow.com Concierge Transfer<br>
+                Corporate Invoice, W-8BEN-E &amp; Mutual NDA Ready
+            </div>
+        </div>
     </div>
 
-    <!-- 逻辑脚本 -->
     <script>
-        /**
-         * 1. 视觉逻辑：矩阵相乘 (Matrix Multiplication)
-         * 模拟 C(i,j) = Row(i) * Col(j) 的点积过程
-         */
-        const canvas = document.getElementById('math-grid');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let mouseX = -1000, mouseY = -1000;
+        (function () {
+            "use strict";
 
-        const spacing = 60; // 矩阵单元格大小
-        let cols, rows;
-        let offsetX, offsetY;
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            
-            cols = Math.floor(width / spacing);
-            rows = Math.floor(height / spacing);
-            
-            // 居中偏移量
-            offsetX = (width - cols * spacing) / 2;
-            offsetY = (height - rows * spacing) / 2;
-        }
-
-        // 动画时间戳（用于数据流动画）
-        let time = 0;
-
-        function draw() {
-            ctx.clearRect(0, 0, width, height);
-            time += 0.02;
-
-            // 寻找离鼠标最近的行与列（模拟激活的 Matrix C_{i,j} 节点）
-            let activeCol = -1;
-            let activeRow = -1;
-            
-            // 只有当鼠标在屏幕内时才激活
-            if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-                activeCol = Math.round((mouseX - offsetX) / spacing);
-                activeRow = Math.round((mouseY - offsetY) / spacing);
-                
-                // 边界限制
-                if (activeCol < 0) activeCol = 0;
-                if (activeCol > cols) activeCol = cols;
-                if (activeRow < 0) activeRow = 0;
-                if (activeRow > rows) activeRow = rows;
-            }
-
-            // --- 绘制矩阵的行 (Matrix A 的横向向量) ---
-            for(let r = 0; r <= rows; r++) {
-                const y = offsetY + r * spacing;
-                const isActive = (r === activeRow);
-                
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(width, y);
-                ctx.strokeStyle = isActive ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.02)';
-                ctx.lineWidth = isActive ? 1.5 : 1;
-                ctx.stroke();
-
-                // 如果是激活行，绘制数据流 (流向交点)
-                if (isActive && activeCol !== -1) {
-                    const targetX = offsetX + activeCol * spacing;
-                    const flowX = (time * 200) % width; // 循环流动
-                    if (flowX < targetX) { // 汇聚到交点前
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                        ctx.fillRect(flowX, y - 1, 10, 2);
-                    }
-                }
-            }
-
-            // --- 绘制矩阵的列 (Matrix B 的纵向向量) ---
-            for(let c = 0; c <= cols; c++) {
-                const x = offsetX + c * spacing;
-                const isActive = (c === activeCol);
-                
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, height);
-                ctx.strokeStyle = isActive ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.02)';
-                ctx.lineWidth = isActive ? 1.5 : 1;
-                ctx.stroke();
-
-                // 如果是激活列，绘制数据流 (流向交点)
-                if (isActive && activeRow !== -1) {
-                    const targetY = offsetY + activeRow * spacing;
-                    const flowY = (time * 200) % height;
-                    if (flowY < targetY) {
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                        ctx.fillRect(x - 1, flowY, 2, 10);
-                    }
-                }
-            }
-
-            // --- 绘制交汇节点 (Dot Product Result) ---
-            for (let c = 0; c <= cols; c++) {
-                for (let r = 0; r <= rows; r++) {
-                    const x = offsetX + c * spacing;
-                    const y = offsetY + r * spacing;
-                    
-                    const isCenter = (c === activeCol && r === activeRow);
-                    const isAxis = (c === activeCol || r === activeRow);
-                    
-                    ctx.beginPath();
-                    if (isCenter) {
-                        // 核心计算节点 C_{i,j}
-                        ctx.arc(x, y, 4, 0, Math.PI * 2);
-                        ctx.fillStyle = 'rgba(255,255,255,0.9)';
-                        ctx.shadowBlur = 10;
-                        ctx.shadowColor = 'rgba(255,255,255,0.5)';
-                        
-                        // 绘制矩阵数学符号暗示
-                        ctx.font = '10px monospace';
-                        ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                        ctx.fillText(`C(${r},${c})`, x + 10, y - 10);
-                        
-                    } else if (isAxis) {
-                        // 参与点积运算的向量节点
-                        ctx.arc(x, y, 2, 0, Math.PI * 2);
-                        ctx.fillStyle = 'rgba(255,255,255,0.3)';
-                        ctx.shadowBlur = 0;
-                    } else {
-                        // 沉寂节点
-                        ctx.arc(x, y, 1, 0, Math.PI * 2);
-                        ctx.fillStyle = 'rgba(255,255,255,0.05)';
-                        ctx.shadowBlur = 0;
-                    }
-                    ctx.fill();
-                }
-            }
-
-            requestAnimationFrame(draw);
-        }
-
-        window.addEventListener('resize', resize);
-        window.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-        window.addEventListener('mouseout', () => {
-            // 鼠标移出屏幕时重置
-            mouseX = -1000;
-            mouseY = -1000;
-        });
-
-        // 初始化 Canvas
-        resize();
-        draw();
-
-        /**
-         * 2. 业务逻辑：季度轮换与邮箱分层 (矩阵/算力主题)
-         */
-        function initBusinessLogic() {
-            const subEl = document.getElementById('dynamic-subtitle');
-            const linkEl = document.getElementById('contact-link');
-
-            // 定义不同季度的配置 (契合二次方和矩阵运算的叙事)
-            const configs = {
-                1: { 
-                    text: 'O ( N² )',  // 代表二次方时间复杂度
-                    email: 'contact@22.ai', 
-                    subject: 'Quadratic Asset Inquiry' 
-                },
-                2: { 
-                    text: 'A × B = C', // 代表矩阵相乘
-                    email: 'matrix@22.ai', 
-                    subject: 'Matrix Logic Inquiry' 
-                },
-                3: { 
-                    text: 'T E N S O R', // 代表高维矩阵运算
-                    email: 'tensor@22.ai', 
-                    subject: 'Tensor Core Acquisition' 
-                },
-                4: { 
-                    text: 'Exponential Growth', // 代表指数级跃迁
-                    email: 'hello@22.ai', 
-                    subject: 'Exponential Infrastructure' 
-                }
+            /**
+             * Configuration Desk
+             * Optional: Paste a Formspree or Serverless Webhook URL into webhookUrl
+             * to silently capture leads alongside email transmission.
+             */
+            const ASSET_CONFIG = {
+                deskEmail: "zzcbib@gmail.com",
+                webhookUrl: "",
+                narratives: [
+                    "HUMAN × AGENT DUET",
+                    "TWENTYTWO  •  XXII",
+                    "QUANTITATIVE & MACRO NEXUS",
+                    "O(N²) TENSOR  •  A2A CLEARING"
+                ]
             };
 
-            const current = configs[1]; // 默认使用 Q1 的配置
+            /**
+             * 1. High-DPI Interactive Matrix & Autonomous Orbital Telemetry
+             */
+            const canvas = document.getElementById("math-grid");
+            const ctx = canvas.getContext("2d");
+            const spacing = 64;
 
-            // 渲染内容
-            subEl.innerText = current.text;
-            linkEl.href = `mailto:${current.email}?subject=${current.subject}`;
+            let width = 0;
+            let height = 0;
+            let cols = 0;
+            let rows = 0;
+            let offsetX = 0;
+            let offsetY = 0;
 
-            // 延迟淡入动画
-            setTimeout(() => {
-                subEl.classList.add('subtitle-visible');
-            }, 500);
-        }
+            let pointerX = -1000;
+            let pointerY = -1000;
+            let lastInteraction = 0;
+            let clock = 0;
 
-        initBusinessLogic();
+            function resizeCanvas() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = window.innerWidth;
+                height = window.innerHeight;
 
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                canvas.style.width = width + "px";
+                canvas.style.height = height + "px";
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                cols = Math.floor(width / spacing);
+                rows = Math.floor(height / spacing);
+                offsetX = (width - cols * spacing) / 2;
+                offsetY = (height - rows * spacing) / 2;
+            }
+
+            function renderMatrix() {
+                ctx.clearRect(0, 0, width, height);
+                clock += 0.016;
+
+                const now = performance.now();
+                const isUserActive = (now - lastInteraction < 3200) &&
+                                     pointerX > 0 && pointerX < width &&
+                                     pointerY > 0 && pointerY < height;
+
+                // Smooth autonomous scan when cursor is idle or on mobile/tablet
+                const targetPosX = isUserActive
+                    ? pointerX
+                    : width * (0.5 + 0.28 * Math.cos(clock * 0.45));
+                const targetPosY = isUserActive
+                    ? pointerY
+                    : height * (0.5 + 0.24 * Math.sin(clock * 0.65));
+
+                let activeCol = Math.max(0, Math.min(cols, Math.round((targetPosX - offsetX) / spacing)));
+                let activeRow = Math.max(0, Math.min(rows, Math.round((targetPosY - offsetY) / spacing)));
+
+                // Horizontal Vector Lines (Row Matrix A)
+                for (let r = 0; r <= rows; r++) {
+                    const y = offsetY + r * spacing;
+                    const isActive = (r === activeRow);
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(width, y);
+                    ctx.strokeStyle = isActive ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.024)";
+                    ctx.lineWidth = isActive ? 1.2 : 1;
+                    ctx.stroke();
+
+                    if (isActive) {
+                        const intersectX = offsetX + activeCol * spacing;
+                        const packetX = (clock * 220) % width;
+                        if (packetX < intersectX) {
+                            ctx.fillStyle = "rgba(255, 255, 255, 0.48)";
+                            ctx.fillRect(packetX, y - 1, 14, 2);
+                        }
+                    }
+                }
+
+                // Vertical Vector Lines (Column Matrix B)
+                for (let c = 0; c <= cols; c++) {
+                    const x = offsetX + c * spacing;
+                    const isActive = (c === activeCol);
+
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, height);
+                    ctx.strokeStyle = isActive ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.024)";
+                    ctx.lineWidth = isActive ? 1.2 : 1;
+                    ctx.stroke();
+
+                    if (isActive) {
+                        const intersectY = offsetY + activeRow * spacing;
+                        const packetY = (clock * 220) % height;
+                        if (packetY < intersectY) {
+                            ctx.fillStyle = "rgba(255, 255, 255, 0.48)";
+                            ctx.fillRect(x - 1, packetY, 2, 14);
+                        }
+                    }
+                }
+
+                // Dot Product Nodes C(i,j)
+                for (let c = 0; c <= cols; c++) {
+                    for (let r = 0; r <= rows; r++) {
+                        const x = offsetX + c * spacing;
+                        const y = offsetY + r * spacing;
+                        const isCenter = (c === activeCol && r === activeRow);
+                        const isAxis = (c === activeCol || r === activeRow);
+
+                        ctx.beginPath();
+                        if (isCenter) {
+                            ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+                            ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+                            ctx.shadowBlur = 12;
+                            ctx.shadowColor = "rgba(255, 255, 255, 0.65)";
+                            ctx.fill();
+                            ctx.shadowBlur = 0;
+
+                            ctx.font = "10px monospace";
+                            ctx.fillStyle = "rgba(255, 255, 255, 0.46)";
+                            ctx.fillText("C(" + r + "," + c + ")", x + 9, y - 9);
+                        } else if (isAxis) {
+                            ctx.arc(x, y, 1.8, 0, Math.PI * 2);
+                            ctx.fillStyle = "rgba(255, 255, 255, 0.28)";
+                            ctx.fill();
+                        } else {
+                            ctx.arc(x, y, 1, 0, Math.PI * 2);
+                            ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+                            ctx.fill();
+                        }
+                    }
+                }
+
+                requestAnimationFrame(renderMatrix);
+            }
+
+            window.addEventListener("resize", resizeCanvas);
+            window.addEventListener("mousemove", function (e) {
+                pointerX = e.clientX;
+                pointerY = e.clientY;
+                lastInteraction = performance.now();
+            });
+            window.addEventListener("touchmove", function (e) {
+                if (e.touches && e.touches[0]) {
+                    pointerX = e.touches[0].clientX;
+                    pointerY = e.touches[0].clientY;
+                    lastInteraction = performance.now();
+                }
+            }, { passive: true });
+
+            resizeCanvas();
+            renderMatrix();
+
+            /**
+             * 2. Multi-Sector Narrative Rotation
+             */
+            const subtitleEl = document.getElementById("dynamic-subtitle");
+            let narrativeIndex = 0;
+
+            setInterval(function () {
+                subtitleEl.classList.remove("visible");
+                setTimeout(function () {
+                    narrativeIndex = (narrativeIndex + 1) % ASSET_CONFIG.narratives.length;
+                    subtitleEl.textContent = ASSET_CONFIG.narratives[narrativeIndex];
+                    subtitleEl.classList.add("visible");
+                }, 560);
+            }, 4200);
+
+            /**
+             * 3. Executive Modal & Dual-Channel Inquiry Handler
+             */
+            const modal = document.getElementById("inquiry-modal");
+            const openBtns = [
+                document.getElementById("main-acquire-btn"),
+                document.getElementById("top-inquire-btn")
+            ];
+            const closeBtn = document.getElementById("close-modal-btn");
+            const form = document.getElementById("acquisition-form");
+            const fallbackPanel = document.getElementById("fallback-panel");
+            const displayEmail = document.getElementById("display-email");
+            const copyBriefBtn = document.getElementById("copy-brief-btn");
+
+            let latestFormattedBrief = "";
+
+            function openModal() {
+                modal.classList.add("open");
+            }
+
+            function closeModal() {
+                modal.classList.remove("open");
+            }
+
+            openBtns.forEach(function (btn) {
+                btn.addEventListener("click", openModal);
+            });
+            closeBtn.addEventListener("click", closeModal);
+            modal.addEventListener("click", function (e) {
+                if (e.target === modal) closeModal();
+            });
+            window.addEventListener("keydown", function (e) {
+                if (e.key === "Escape" && modal.classList.contains("open")) {
+                    closeModal();
+                }
+            });
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const name = document.getElementById("buyer-name").value.trim();
+                const email = document.getElementById("buyer-email").value.trim();
+                const entity = document.getElementById("buyer-entity").value.trim();
+                const tier = document.getElementById("offer-tier").value;
+                const notes = document.getElementById("buyer-notes").value.trim() || "N/A";
+
+                const subject = "22.ai Strategic Acquisition Inquiry — " + entity;
+                const bodyLines = [
+                    "STRATEGIC ACQUISITION BRIEF // 22.AI",
+                    "----------------------------------------",
+                    "Principal / Contact : " + name,
+                    "Corporate Email     : " + email,
+                    "Organization        : " + entity,
+                    "Proposed Framework  : " + tier,
+                    "Additional Notes    : " + notes,
+                    "----------------------------------------",
+                    "Requested via 22.ai Executive Desk"
+                ];
+                const bodyText = bodyLines.join("\n");
+                latestFormattedBrief = "To: " + ASSET_CONFIG.deskEmail + "\nSubject: " + subject + "\n\n" + bodyText;
+
+                // Optional Silent Webhook Transmission
+                if (ASSET_CONFIG.webhookUrl) {
+                    fetch(ASSET_CONFIG.webhookUrl, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                        body: JSON.stringify({ asset: "22.ai", name, email, entity, tier, notes })
+                    }).catch(function () {});
+                }
+
+                // Trigger Native Mail Client + Reveal Webmail Safe Copy Panel
+                displayEmail.textContent = ASSET_CONFIG.deskEmail;
+                fallbackPanel.classList.add("active");
+
+                const mailtoUri = "mailto:" + ASSET_CONFIG.deskEmail +
+                    "?subject=" + encodeURIComponent(subject) +
+                    "&body=" + encodeURIComponent(bodyText);
+                window.location.href = mailtoUri;
+            });
+
+            copyBriefBtn.addEventListener("click", function () {
+                if (!latestFormattedBrief) return;
+                navigator.clipboard.writeText(latestFormattedBrief).then(function () {
+                    copyBriefBtn.textContent = "Copied to Clipboard — Ready to Paste in Email";
+                    setTimeout(function () {
+                        copyBriefBtn.textContent = "Copy Formatted Brief & Desk Email";
+                    }, 3000);
+                });
+            });
+        })();
     </script>
 </body>
 </html>
